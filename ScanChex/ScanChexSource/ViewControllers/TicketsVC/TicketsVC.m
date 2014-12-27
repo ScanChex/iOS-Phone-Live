@@ -298,7 +298,10 @@
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     TicketDTO *ticket=[self.tickets objectAtIndex:section];
     
-    return ticket.assetCode;
+    if(ticket.unEncryptedAssetID == nil)
+        return @"";
+    
+    return [NSString stringWithFormat:@" %@",ticket.unEncryptedAssetID];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
