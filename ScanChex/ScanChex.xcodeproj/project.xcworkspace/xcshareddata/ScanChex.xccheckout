@@ -10,31 +10,31 @@
 	<string>ScanChex</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>222743552A76DCE0CD2E089A7961F8A59A209900</key>
-		<string>https://github.com/ScanChex/iPhone_version3.git</string>
+		<key>66BFC68AAC6259FCD9D7DE8AD1466E6B4CA1A6AE</key>
+		<string>https://github.com/ScanChex/iOS-Phone-Live.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>ScanChex - 19-06-2014/ScanChex.xcodeproj</string>
+	<string>ScanChex/ScanChex.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>222743552A76DCE0CD2E089A7961F8A59A209900</key>
+		<key>66BFC68AAC6259FCD9D7DE8AD1466E6B4CA1A6AE</key>
 		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/ScanChex/iPhone_version3.git</string>
+	<string>https://github.com/ScanChex/iOS-Phone-Live.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>222743552A76DCE0CD2E089A7961F8A59A209900</string>
+	<string>66BFC68AAC6259FCD9D7DE8AD1466E6B4CA1A6AE</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>222743552A76DCE0CD2E089A7961F8A59A209900</string>
+			<string>66BFC68AAC6259FCD9D7DE8AD1466E6B4CA1A6AE</string>
 			<key>IDESourceControlWCCName</key>
-			<string>iPhone_version3</string>
+			<string>iOS-Phone-Live</string>
 		</dict>
 	</array>
 </dict>
