@@ -85,6 +85,13 @@
         
         [self.tickets addObject:[TicketInfoDTO initWithTicketInfo:info]];
     }
+    
+    NSSortDescriptor *sortByName = [NSSortDescriptor sortDescriptorWithKey:@"ticket_end_time"                                                                 ascending:NO];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:sortByName];
+    NSArray *sortedArray = [self.tickets sortedArrayUsingDescriptors:sortDescriptors];
+    [self.tickets removeAllObjects];
+    self.tickets = [NSMutableArray arrayWithArray:sortedArray];
+
 }
 -(void)updateCheckPoint:(NSMutableArray *)data {
     self.checkPoints = [NSMutableArray array];
