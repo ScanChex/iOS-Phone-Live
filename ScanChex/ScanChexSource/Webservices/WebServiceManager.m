@@ -1818,7 +1818,14 @@ withCompletionHandler:(CompletionHandler)handler
     [request setPostValue:@"iphone" forKey:@"device_type"];
     [request setPostValue:@"model" forKey:@"model"];
     [request setPostValue:@"12123101234" forKey:@"phone"];
-      [request setPostValue:[[[UIDevice currentDevice] identifierForVendor] UUIDString] forKey:@"uuid"];
+    
+   
+    NSString * deviceTokenString  =[[NSUserDefaults standardUserDefaults] objectForKey:@"apns_device_token"];
+    
+    //[request setPostValue:[[[UIDevice currentDevice] identifierForVendor] UUIDString] forKey:@"uuid"];
+    [request setPostValue:deviceTokenString forKey:@"uuid"];
+    
+    
     [request setPostValue:@"device" forKey:@"action"];
     [request setCompletionBlock:^{
         
