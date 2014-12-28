@@ -14,6 +14,8 @@
 #import "Constant.h"
 #import "LoginVC.h"
 
+#define MINUTES_TO_LOGOUT 1
+
 @implementation AppDelegate
 @synthesize navController;
 
@@ -106,14 +108,14 @@
 	}
   
   // If application is launched due to  notification,present another view controller.
-  UILocalNotification *notification = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
-  
-  if (notification)
-  {
-    LoginVC *loginViewController = [[LoginVC alloc]initWithNibName:NSStringFromClass([LoginVC class]) bundle:nil];
-    [self.window.rootViewController presentViewController:loginViewController animated:YES completion:nil];
-    
-  }
+//  UILocalNotification *notification = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+//  
+//  if (notification)
+//  {
+//    LoginVC *loginViewController = [[LoginVC alloc]initWithNibName:NSStringFromClass([LoginVC class]) bundle:nil];
+//    [self.window.rootViewController presentViewController:loginViewController animated:YES completion:nil];
+//    
+//  }
   
     #if TARGET_IPHONE_SIMULATOR
     [[NSUserDefaults standardUserDefaults]setObject:[NSString stringWithFormat:@"%@",@"na"] forKey:@"apns_device_token"];
@@ -212,17 +214,34 @@
     }];
   
   //Schedule local notification after 10 mins
-  NSDate *newDate = [[NSDate date] dateByAddingTimeInterval:10*60];
-  
-  [self scheduleAlarmForDate:newDate];
-  
-  NSLog(@"In applicationDidEnterBackground");
+ // NSDate *newDate = [[NSDate date] dateByAddingTimeInterval:10*60];
+  //[self scheduleAlarmForDate:newDate];
+    
+     NSDateFormatter *dateFormat = [[NSDateFormatter alloc]init];
+    [dateFormat setDateFormat:@"MM/dd/yyyy HH:mm:ss"];
+    NSString *backGroundTime = [dateFormat stringFromDate:[NSDate date]];
+    [[NSUserDefaults standardUserDefaults]setValue:backGroundTime forKey:@"backGroundTime"];
+    [dateFormat release];
+    NSLog(@"In applicationDidEnterBackground");
 
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc]init];
+    [dateFormat setDateFormat:@"MM/dd/yyyy HH:mm:ss"];
+    NSString *foreGroundTime = [dateFormat stringFromDate:[NSDate date]];
+    [dateFormat release];
+    
+    NSString *backGroundTime = [[NSUserDefaults standardUserDefaults]valueForKey:@"backGroundTime"];
+    int timeDifferenceInMinutes = [self minCalculation_backgroundtime:backGroundTime forgroundTime:foreGroundTime];
+    
+    if (timeDifferenceInMinutes >= MINUTES_TO_LOGOUT) {
+        
+        [self.navController popToRootViewControllerAnimated:YES];
+    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -248,6 +267,24 @@
 //    NSArray *dirFiles = [filemgr contentsOfDirectoryAtPath:inboxPath error:nil];
 //    
     return YES;
+}
+
+// Call this method to calculate the duration of inactivity
+-(int)minCalculation_backgroundtime:(NSString *)backgroundTime forgroundTime:(NSString *)foreGroundTime
+{
+    NSDateFormatter *dateformat = [[NSDateFormatter alloc]init];
+    [dateformat setDateFormat:@"MM/dd/yyyy HH:mm:ss"];
+    
+    NSDate *lastDate = [dateformat dateFromString:foreGroundTime];
+    NSDate *todaysDate = [dateformat dateFromString:backgroundTime];
+    [dateformat release];
+    NSTimeInterval lastDiff = [lastDate timeIntervalSinceNow];
+    NSTimeInterval todaysDiff = [todaysDate timeIntervalSinceNow];
+    NSTimeInterval dateDiff = lastDiff - todaysDiff;
+    int min = dateDiff/60;
+    NSLog(@" after %i minutes",min);
+    
+    return min;
 }
 
 - (void)scheduleAlarmForDate:(NSDate*)theDate

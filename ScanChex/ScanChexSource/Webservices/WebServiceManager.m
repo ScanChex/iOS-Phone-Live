@@ -274,8 +274,8 @@ static WebServiceManager *sharedInstance;
     [request setPostValue:userID forKey:@"username"];
     [request setPostValue:password forKey:@"password"];
     [request setPostValue:[[[UIDevice currentDevice] identifierForVendor] UUIDString] forKey:@"uuid"];
-    NSString * tempString  =[[NSUserDefaults standardUserDefaults] objectForKey:@"apns_device_token"];
-    [request setPostValue:tempString forKey:@"device_token"];
+    NSString * deviceTokenString  =[[NSUserDefaults standardUserDefaults] objectForKey:@"apns_device_token"];
+    [request setPostValue:deviceTokenString forKey:@"device_token"];
 //    UIAlertView * tempAlert = [[UIAlertView alloc] initWithTitle:@"DeviceToken login" message:tempString delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 //    [tempAlert show];
     

@@ -16,6 +16,8 @@
 @property (nonatomic, retain)CLLocation *lastKnownLocation;
 @property (nonatomic,retain)NSString * assetID;
 @property (nonatomic,retain) BackgroundTaskManager * bgTask;
+@property (nonatomic,assign) BOOL isFirstLaunch;
+
 
 +(id)sharedManager;
 -(void)startListening;
@@ -25,8 +27,9 @@
 ///Threading//
 - (void)startUpdating;
 - (void)stopUpdating;
--(void)startListeningWithSignificantChanges;
--(void)stopListeningWithSignificationChanges;
-
+- (void)startListeningWithSignificantChanges;
+- (void)stopListeningWithSignificationChanges;
 - (void)requestUpdates;
+- (void)checkForLocationStatus;
+
 @end

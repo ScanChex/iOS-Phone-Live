@@ -64,7 +64,15 @@
     if (![user.logo isKindOfClass:[NSNull class]])
         [self.logo setImageURL:[NSURL URLWithString:user.logo]];
     
-    [[VSLocationManager sharedManager] startListening];
+    VSLocationManager *locationManager = [VSLocationManager sharedManager];
+    BOOL isFirstLaunch = [[NSUserDefaults standardUserDefaults] boolForKey:@"isFirstLaunch"];
+    if (!isFirstLaunch) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isFirstLaunch"];
+    }
+    
+    locationManager.isFirstLaunch = !isFirstLaunch;
+    [locationManager startListening];
+    
     for (UIView * v in [self.view subviews]) {
         if ([v isKindOfClass:[UIButton class]]) {
             if ([[[(UIButton*)v titleLabel] text] isEqualToString:@"LOG OUT"]) {

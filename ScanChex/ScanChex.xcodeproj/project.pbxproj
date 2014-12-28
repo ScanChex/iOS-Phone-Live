@@ -12,6 +12,12 @@
 		9D331116169DA6AD004EB03E /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D331115169DA6AD004EB03E /* ImageIO.framework */; };
 		9D331118169DA6D3004EB03E /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D331117169DA6D3004EB03E /* MessageUI.framework */; };
 		9D46FF2B172BE08400030CC4 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D46FF2A172BE08400030CC4 /* MediaPlayer.framework */; };
+		9D5F16371A505D33008950C9 /* RIButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D5F16321A505D33008950C9 /* RIButtonItem.m */; };
+		9D5F16381A505D33008950C9 /* UIActionSheet+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D5F16341A505D33008950C9 /* UIActionSheet+Blocks.m */; };
+		9D5F16391A505D33008950C9 /* UIAlertView+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D5F16361A505D33008950C9 /* UIAlertView+Blocks.m */; };
+		9D5F163B1A507C31008950C9 /* libFlurry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D5F163A1A507C31008950C9 /* libFlurry.a */; };
+		9D5F163D1A507C40008950C9 /* libmp3lame.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D5F163C1A507C40008950C9 /* libmp3lame.a */; };
+		9D5F163F1A507C5B008950C9 /* libPayPalMobile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D5F163E1A507C5B008950C9 /* libPayPalMobile.a */; };
 		9D6653721A4EADEA00EFA16A /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D6650CB1A4EADE900EFA16A /* ASIAuthenticationDialog.m */; };
 		9D6653731A4EADEA00EFA16A /* ASIDataCompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D6650CE1A4EADE900EFA16A /* ASIDataCompressor.m */; };
 		9D6653741A4EADEA00EFA16A /* ASIDataDecompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D6650D01A4EADE900EFA16A /* ASIDataDecompressor.m */; };
@@ -37,7 +43,6 @@
 		9D6653881A4EADEA00EFA16A /* BackgroundTaskManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D6650FF1A4EADE900EFA16A /* BackgroundTaskManager.m */; };
 		9D6653891A4EADEA00EFA16A /* CustomIOS7AlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D6651011A4EADE900EFA16A /* CustomIOS7AlertView.m */; };
 		9D66538A1A4EADEA00EFA16A /* Avro-LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9D6651031A4EADE900EFA16A /* Avro-LICENSE.txt */; };
-		9D66538B1A4EADEA00EFA16A /* libFlurry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D6651051A4EADE900EFA16A /* libFlurry.a */; };
 		9D66538C1A4EADEA00EFA16A /* FTWCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D6651071A4EADE900EFA16A /* FTWCache.m */; };
 		9D66538D1A4EADEA00EFA16A /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D6651091A4EADE900EFA16A /* iCarousel.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		9D66538E1A4EADEA00EFA16A /* PDFSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D66510D1A4EADE900EFA16A /* PDFSerializer.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -73,7 +78,6 @@
 		9D6653AC1A4EADEA00EFA16A /* SBJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D6651501A4EADE900EFA16A /* SBJsonBase.m */; };
 		9D6653AD1A4EADEA00EFA16A /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D6651521A4EADE900EFA16A /* SBJsonParser.m */; };
 		9D6653AE1A4EADEA00EFA16A /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D6651541A4EADE900EFA16A /* SBJsonWriter.m */; };
-		9D6653AF1A4EADEA00EFA16A /* libmp3lame.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D6651571A4EADE900EFA16A /* libmp3lame.a */; };
 		9D6653B01A4EADEA00EFA16A /* MMPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D66515A1A4EADE900EFA16A /* MMPickerView.m */; };
 		9D6653B11A4EADEA00EFA16A /* NSString+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D66515C1A4EADE900EFA16A /* NSString+MD5.m */; };
 		9D6653B21A4EADEA00EFA16A /* button_secondary.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D66515F1A4EADE900EFA16A /* button_secondary.png */; };
@@ -84,7 +88,6 @@
 		9D6653B71A4EADEA00EFA16A /* check@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D6651641A4EADE900EFA16A /* check@2x.png */; };
 		9D6653B81A4EADEA00EFA16A /* ios_sample_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D6651651A4EADE900EFA16A /* ios_sample_icon.png */; };
 		9D6653B91A4EADEA00EFA16A /* ios_sample_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D6651661A4EADE900EFA16A /* ios_sample_icon@2x.png */; };
-		9D6653BA1A4EADEA00EFA16A /* libPayPalMobile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D6651671A4EADE900EFA16A /* libPayPalMobile.a */; };
 		9D6653BB1A4EADEA00EFA16A /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D66516D1A4EADE900EFA16A /* Reachability.m */; };
 		9D6653BC1A4EADEA00EFA16A /* fingerTip.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D66516F1A4EADE900EFA16A /* fingerTip.png */; };
 		9D6653BD1A4EADEA00EFA16A /* SignatureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D6651711A4EADE900EFA16A /* SignatureView.m */; };
@@ -412,6 +415,15 @@
 		9D331115169DA6AD004EB03E /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		9D331117169DA6D3004EB03E /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		9D46FF2A172BE08400030CC4 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		9D5F16311A505D33008950C9 /* RIButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RIButtonItem.h; sourceTree = "<group>"; };
+		9D5F16321A505D33008950C9 /* RIButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RIButtonItem.m; sourceTree = "<group>"; };
+		9D5F16331A505D33008950C9 /* UIActionSheet+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+Blocks.h"; sourceTree = "<group>"; };
+		9D5F16341A505D33008950C9 /* UIActionSheet+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+Blocks.m"; sourceTree = "<group>"; };
+		9D5F16351A505D33008950C9 /* UIAlertView+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+Blocks.h"; sourceTree = "<group>"; };
+		9D5F16361A505D33008950C9 /* UIAlertView+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+Blocks.m"; sourceTree = "<group>"; };
+		9D5F163A1A507C31008950C9 /* libFlurry.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry.a; sourceTree = "<group>"; };
+		9D5F163C1A507C40008950C9 /* libmp3lame.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libmp3lame.a; sourceTree = "<group>"; };
+		9D5F163E1A507C5B008950C9 /* libPayPalMobile.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPayPalMobile.a; sourceTree = "<group>"; };
 		9D6650CA1A4EADE900EFA16A /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIAuthenticationDialog.h; sourceTree = "<group>"; };
 		9D6650CB1A4EADE900EFA16A /* ASIAuthenticationDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIAuthenticationDialog.m; sourceTree = "<group>"; };
 		9D6650CC1A4EADE900EFA16A /* ASICacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASICacheDelegate.h; sourceTree = "<group>"; };
@@ -467,7 +479,6 @@
 		9D6651011A4EADE900EFA16A /* CustomIOS7AlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomIOS7AlertView.m; sourceTree = "<group>"; };
 		9D6651031A4EADE900EFA16A /* Avro-LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Avro-LICENSE.txt"; sourceTree = "<group>"; };
 		9D6651041A4EADE900EFA16A /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
-		9D6651051A4EADE900EFA16A /* libFlurry.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry.a; sourceTree = "<group>"; };
 		9D6651061A4EADE900EFA16A /* FTWCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTWCache.h; sourceTree = "<group>"; };
 		9D6651071A4EADE900EFA16A /* FTWCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTWCache.m; sourceTree = "<group>"; };
 		9D6651081A4EADE900EFA16A /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
@@ -541,7 +552,6 @@
 		9D6651531A4EADE900EFA16A /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		9D6651541A4EADE900EFA16A /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
 		9D6651561A4EADE900EFA16A /* lame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lame.h; sourceTree = "<group>"; };
-		9D6651571A4EADE900EFA16A /* libmp3lame.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libmp3lame.a; sourceTree = "<group>"; };
 		9D6651591A4EADE900EFA16A /* MMPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMPickerView.h; sourceTree = "<group>"; };
 		9D66515A1A4EADE900EFA16A /* MMPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMPickerView.m; sourceTree = "<group>"; };
 		9D66515B1A4EADE900EFA16A /* NSString+MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5.h"; sourceTree = "<group>"; };
@@ -554,7 +564,6 @@
 		9D6651641A4EADE900EFA16A /* check@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check@2x.png"; sourceTree = "<group>"; };
 		9D6651651A4EADE900EFA16A /* ios_sample_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ios_sample_icon.png; sourceTree = "<group>"; };
 		9D6651661A4EADE900EFA16A /* ios_sample_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios_sample_icon@2x.png"; sourceTree = "<group>"; };
-		9D6651671A4EADE900EFA16A /* libPayPalMobile.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPayPalMobile.a; sourceTree = "<group>"; };
 		9D6651681A4EADE900EFA16A /* PayPalMobile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPalMobile.h; sourceTree = "<group>"; };
 		9D6651691A4EADE900EFA16A /* PayPalPayment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPalPayment.h; sourceTree = "<group>"; };
 		9D66516A1A4EADE900EFA16A /* PayPalPaymentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPalPaymentViewController.h; sourceTree = "<group>"; };
@@ -1037,15 +1046,16 @@
 				9D75C356167A332D00A777E3 /* libiconv.dylib in Frameworks */,
 				9D75C357167A332D00A777E3 /* QuartzCore.framework in Frameworks */,
 				9D75C351167A32CD00A777E3 /* AVFoundation.framework in Frameworks */,
+				9D5F163D1A507C40008950C9 /* libmp3lame.a in Frameworks */,
+				9D5F163B1A507C31008950C9 /* libFlurry.a in Frameworks */,
 				9D75C352167A32CD00A777E3 /* CoreMedia.framework in Frameworks */,
 				9D75C353167A32CD00A777E3 /* CoreVideo.framework in Frameworks */,
 				9DA5626A1678CBB5006CC95E /* UIKit.framework in Frameworks */,
 				9DA5626C1678CBB5006CC95E /* Foundation.framework in Frameworks */,
-				9D6653AF1A4EADEA00EFA16A /* libmp3lame.a in Frameworks */,
-				9D66538B1A4EADEA00EFA16A /* libFlurry.a in Frameworks */,
 				9DA5626E1678CBB5006CC95E /* CoreGraphics.framework in Frameworks */,
 				9DB683BF167C666D0002DC40 /* CFNetwork.framework in Frameworks */,
 				9DB683C0167C666D0002DC40 /* QuartzCore.framework in Frameworks */,
+				9D5F163F1A507C5B008950C9 /* libPayPalMobile.a in Frameworks */,
 				9DB683C1167C666D0002DC40 /* Security.framework in Frameworks */,
 				9DB683C2167C666D0002DC40 /* SystemConfiguration.framework in Frameworks */,
 				9D6654E31A4EADEA00EFA16A /* libzbar.a in Frameworks */,
@@ -1056,7 +1066,6 @@
 				9D1D18301688DD110036C024 /* MapKit.framework in Frameworks */,
 				9D331116169DA6AD004EB03E /* ImageIO.framework in Frameworks */,
 				9D331118169DA6D3004EB03E /* MessageUI.framework in Frameworks */,
-				9D6653BA1A4EADEA00EFA16A /* libPayPalMobile.a in Frameworks */,
 				9D46FF2B172BE08400030CC4 /* MediaPlayer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1064,6 +1073,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9D5F16301A505D33008950C9 /* UIAlertViewBlocks */ = {
+			isa = PBXGroup;
+			children = (
+				9D5F16311A505D33008950C9 /* RIButtonItem.h */,
+				9D5F16321A505D33008950C9 /* RIButtonItem.m */,
+				9D5F16331A505D33008950C9 /* UIActionSheet+Blocks.h */,
+				9D5F16341A505D33008950C9 /* UIActionSheet+Blocks.m */,
+				9D5F16351A505D33008950C9 /* UIAlertView+Blocks.h */,
+				9D5F16361A505D33008950C9 /* UIAlertView+Blocks.m */,
+			);
+			path = UIAlertViewBlocks;
+			sourceTree = "<group>";
+		};
 		9D6650C71A4EADE900EFA16A /* ScanChexSource */ = {
 			isa = PBXGroup;
 			children = (
@@ -1093,6 +1115,7 @@
 		9D6650C81A4EADE900EFA16A /*  External Sources */ = {
 			isa = PBXGroup;
 			children = (
+				9D5F16301A505D33008950C9 /* UIAlertViewBlocks */,
 				9D6650C91A4EADE900EFA16A /* ASIHttpRequest */,
 				9D6650FE1A4EADE900EFA16A /* BackgroundTaskManager.h */,
 				9D6650FF1A4EADE900EFA16A /* BackgroundTaskManager.m */,
@@ -1202,9 +1225,9 @@
 		9D6651021A4EADE900EFA16A /* Flurry */ = {
 			isa = PBXGroup;
 			children = (
+				9D5F163A1A507C31008950C9 /* libFlurry.a */,
 				9D6651031A4EADE900EFA16A /* Avro-LICENSE.txt */,
 				9D6651041A4EADE900EFA16A /* Flurry.h */,
-				9D6651051A4EADE900EFA16A /* libFlurry.a */,
 			);
 			path = Flurry;
 			sourceTree = "<group>";
@@ -1334,7 +1357,7 @@
 			isa = PBXGroup;
 			children = (
 				9D6651561A4EADE900EFA16A /* lame.h */,
-				9D6651571A4EADE900EFA16A /* libmp3lame.a */,
+				9D5F163C1A507C40008950C9 /* libmp3lame.a */,
 			);
 			path = lame;
 			sourceTree = "<group>";
@@ -1351,8 +1374,8 @@
 		9D66515D1A4EADE900EFA16A /* PayPalMobile */ = {
 			isa = PBXGroup;
 			children = (
+				9D5F163E1A507C5B008950C9 /* libPayPalMobile.a */,
 				9D66515E1A4EADE900EFA16A /* Images */,
-				9D6651671A4EADE900EFA16A /* libPayPalMobile.a */,
 				9D6651681A4EADE900EFA16A /* PayPalMobile.h */,
 				9D6651691A4EADE900EFA16A /* PayPalPayment.h */,
 				9D66516A1A4EADE900EFA16A /* PayPalPaymentViewController.h */,
@@ -2700,6 +2723,7 @@
 				9D6654A41A4EADEA00EFA16A /* UploadAdminVC.m in Sources */,
 				9D6653811A4EADEA00EFA16A /* ASICloudFilesRequest.m in Sources */,
 				9D66546E1A4EADEA00EFA16A /* UIWindow+Hierarchy.m in Sources */,
+				9D5F16391A505D33008950C9 /* UIAlertView+Blocks.m in Sources */,
 				9D66546D1A4EADEA00EFA16A /* UIView+IQKeyboardToolbar.m in Sources */,
 				9D6654071A4EADEA00EFA16A /* BlockAlertView.m in Sources */,
 				9D6654811A4EADEA00EFA16A /* VSLocationManager.m in Sources */,
@@ -2832,11 +2856,13 @@
 				9D66549C1A4EADEA00EFA16A /* CheckOutOptionsViewController.m in Sources */,
 				9D6654CD1A4EADEA00EFA16A /* ShowQuestionsVC.m in Sources */,
 				9D6653861A4EADEA00EFA16A /* ASIS3Request.m in Sources */,
+				9D5F16371A505D33008950C9 /* RIButtonItem.m in Sources */,
 				9D6653F31A4EADEA00EFA16A /* ReaderThumbView.m in Sources */,
 				9D6653CE1A4EADEA00EFA16A /* FillBlankCell.m in Sources */,
 				9D6654961A4EADEA00EFA16A /* CheckInTicketsViewController.m in Sources */,
 				9D6653AB1A4EADEA00EFA16A /* SBJSON.m in Sources */,
 				9D6653AE1A4EADEA00EFA16A /* SBJsonWriter.m in Sources */,
+				9D5F16381A505D33008950C9 /* UIActionSheet+Blocks.m in Sources */,
 				9D6654D51A4EADEA00EFA16A /* MyLocation.m in Sources */,
 				9D66549A1A4EADEA00EFA16A /* CheckOutInitialInformationViewController.m in Sources */,
 				9D66547C1A4EADEA00EFA16A /* ServiceDTO.m in Sources */,
@@ -2945,6 +2971,15 @@
 					External,
 					Sources/PayPalMobile,
 					"$(PROJECT_DIR)/ScanChexSource/ZBarSDK",
+					"$(PROJECT_DIR)/ScanChexSource/",
+					External,
+					Sources/Flurry,
+					"$(PROJECT_DIR)/ScanChexSource/",
+					External,
+					Sources/lame,
+					"$(PROJECT_DIR)/ScanChexSource/",
+					External,
+					Sources/PayPalMobile,
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
@@ -2990,6 +3025,15 @@
 					External,
 					Sources/PayPalMobile,
 					"$(PROJECT_DIR)/ScanChexSource/ZBarSDK",
+					"$(PROJECT_DIR)/ScanChexSource/",
+					External,
+					Sources/Flurry,
+					"$(PROJECT_DIR)/ScanChexSource/",
+					External,
+					Sources/lame,
+					"$(PROJECT_DIR)/ScanChexSource/",
+					External,
+					Sources/PayPalMobile,
 				);
 				OTHER_LDFLAGS = (
 					"-lc++",

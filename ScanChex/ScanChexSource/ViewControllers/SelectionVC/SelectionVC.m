@@ -54,7 +54,18 @@
 }
 - (void)viewDidLoad
 {
-    [[VSLocationManager sharedManager] startListening];
+    
+    
+    VSLocationManager *locationManager = [VSLocationManager sharedManager];
+    BOOL isFirstLaunch = [[NSUserDefaults standardUserDefaults] boolForKey:@"isFirstLaunch"];
+    if (!isFirstLaunch) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isFirstLaunch"];
+    }
+    
+    locationManager.isFirstLaunch = !isFirstLaunch;
+    [locationManager startListening];
+
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageNotification:) name:kPushReceived object:nil];
     if ([[SharedManager getInstance] isMessage]) {
         [self.lblMessage setHidden:YES];

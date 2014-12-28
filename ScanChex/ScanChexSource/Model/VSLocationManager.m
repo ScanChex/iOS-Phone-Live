@@ -12,7 +12,7 @@
 #import "VSSharedManager.h"
 #import "Constant.h"
 #import <sys/utsname.h>
-
+#import "UIAlertView+Blocks.h"
 
 
 #define IS_OS_8_OR_LATER ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
@@ -36,7 +36,6 @@ int locationUpdateInterval = 300;//5 mins
 
 static VSLocationManager *sharedInstance;
 
-//http://mobileoop.com/background-location-update-programming-for-ios-7
 
 +(id)sharedManager{
     
@@ -56,6 +55,8 @@ static VSLocationManager *sharedInstance;
     if(!self.manager)
     {
         self.manager= [[[CLLocationManager alloc] init] autorelease];
+    
+        [self checkForLocationStatus];
         self.manager.delegate=self;
         self.assetID=[[[NSString alloc] initWithString:@"0"] autorelease];
         //Set some parameters for the location object.
@@ -65,6 +66,7 @@ static VSLocationManager *sharedInstance;
         [self.manager setHeadingOrientation:CLDeviceOrientationUnknown];
     }
    
+  
     if (([[[UIDevice currentDevice] systemVersion] floatValue]>=6.0)) {
         
         [self.manager setPausesLocationUpdatesAutomatically:NO];
@@ -187,6 +189,70 @@ static VSLocationManager *sharedInstance;
     
 }
 
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
+    /*
+     The delegate function will be called when the permission status changes the application should then attempt to handle the change appropriately by changing UI or setting up or tearing down data structures.
+     */
+    
+    if (self.isFirstLaunch) {
+        self.isFirstLaunch = NO;
+        return;
+    }
+    
+    if(status == kCLAuthorizationStatusNotDetermined) {
+        
+        [self deniedLocationAccessAlert];
+    }
+    else if(status == kCLAuthorizationStatusRestricted) {
+        [self deniedLocationAccessAlert];
+    }
+    else if(status == kCLAuthorizationStatusDenied) {
+        [self deniedLocationAccessAlert];
+    }
+    else if(status == kCLAuthorizationStatusAuthorizedAlways) {
+        
+        
+    }
+}
+
+-(void)checkForLocationStatus{
+
+    if (!self.isFirstLaunch) {
+     
+        if (![CLLocationManager locationServicesEnabled]) {
+            
+            [self deniedLocationAccessAlert];
+        }
+    }
+}
+
+-(void)deniedLocationAccessAlert{
+    
+    __block RIButtonItem *okItem = [RIButtonItem itemWithLabel:@"OK" action:^{
+        
+        switch ([CLLocationManager authorizationStatus]) {
+            case kCLAuthorizationStatusNotDetermined:
+                [self deniedLocationAccessAlert];
+                break;
+            case kCLAuthorizationStatusRestricted:
+                [self deniedLocationAccessAlert];
+                break;
+            case kCLAuthorizationStatusDenied:
+                [self deniedLocationAccessAlert];
+                break;
+        
+            default:
+                break;
+        }
+        
+    }];
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Go to settings-->Privcay-->Location Settings-->Enable ScanChex location settings" message:@"" cancelButtonItem:okItem otherButtonItems:nil];
+    [alertView show];
+    
+}
+
+
 -(void)applicationEnterBackground{
 //    CLLocationManager *locationManager = [LocationTracker sharedLocationManager];
 //    locationManager.delegate = self;
@@ -218,13 +284,15 @@ static VSLocationManager *sharedInstance;
     UserDTO *user=[[VSSharedManager sharedManager] currentUser];
     
    
+    NSString * deviceTokenString  =[[NSUserDefaults standardUserDefaults] objectForKey:@"apns_device_token"];
+
     [[WebServiceManager sharedManager] updateLocation:[[NSUserDefaults standardUserDefaults] objectForKey:@"userID"]
                                             masterKey:[NSString stringWithFormat:@"%d", user.masterKey]
                                               assetId:self.assetID
                                            deviceMake:@"Apple"
                                           deviceModel:machineName()
                                              deviceOS:[[UIDevice currentDevice] systemVersion]
-                                             deviceID:[[[UIDevice currentDevice] identifierForVendor] UUIDString]
+                                             deviceID:deviceTokenString//[[[UIDevice currentDevice] identifierForVendor] UUIDString]
                                              latitude:[NSString stringWithFormat:@"%.7f",lasKnownLocation.coordinate.latitude]
                                             longitude:[NSString stringWithFormat:@"%.7f",lasKnownLocation.coordinate.longitude]
                                                 speed:[NSString stringWithFormat:@"%.2f",lasKnownLocation.speed]
