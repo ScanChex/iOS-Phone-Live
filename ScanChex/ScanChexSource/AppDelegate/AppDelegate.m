@@ -13,8 +13,12 @@
 #import "MessageCentreVC.h"
 #import "Constant.h"
 #import "LoginVC.h"
+#import "UIAlertView+Blocks.h"
 
 #define MINUTES_TO_LOGOUT 1
+
+#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+
 
 @implementation AppDelegate
 @synthesize navController;
@@ -34,12 +38,26 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
+    BOOL isFirstLaunch = [[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"];
+    if (!isFirstLaunch) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstLaunch"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    else{
+        
+        if (![self checkForPushNotificationPermission]) {
+            
+            [self deniedPushNotificationAccessAlert];
+        }
+    }
     [[IQKeyboardManager sharedManager] setEnable:YES];
     [[IQKeyboardManager sharedManager] setEnableAutoToolbar:YES];
     [[SharedManager getInstance] setIsMessage:FALSE];
 
+ 
+    
     [[UIDevice currentDevice] setBatteryMonitoringEnabled:YES];
-
 //    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     if (![[NSUserDefaults standardUserDefaults] objectForKey:@"color"]) {
@@ -142,9 +160,47 @@
     
 }
 
+-(void)deniedPushNotificationAccessAlert{
+    
+    __block RIButtonItem *okItem = [RIButtonItem itemWithLabel:@"OK" action:^{
+        
+        if (![self checkForPushNotificationPermission]) {
+            
+            [self deniedPushNotificationAccessAlert];
+        }
+    }];
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Go to settings-->Notifications-->Enable ScanChex Push notification" message:@"" cancelButtonItem:okItem otherButtonItems:nil];
+    [alertView show];
+    [alertView release];
+}
+
+-(BOOL)checkForPushNotificationPermission{
+
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")){
+        UIUserNotificationType* type = [[[UIApplication sharedApplication] currentUserNotificationSettings] types];
+        if (type == UIUserNotificationTypeNone)
+            return NO;
+        else
+            return YES;
+    }
+    else {
+        UIRemoteNotificationType types = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
+        if (types == UIRemoteNotificationTypeNone)
+            return NO;
+        else
+            return YES;
+    }
+}
 - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
 {
 	NSLog(@"Failed to get token, error: %@", error);
+    
+    if (![self checkForPushNotificationPermission]) {
+        
+        [self deniedPushNotificationAccessAlert];
+    }
+    //[self deniedPushNotificationAccessAlert];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo{
@@ -282,7 +338,6 @@
     NSTimeInterval todaysDiff = [todaysDate timeIntervalSinceNow];
     NSTimeInterval dateDiff = lastDiff - todaysDiff;
     int min = dateDiff/60;
-    NSLog(@" after %i minutes",min);
     
     return min;
 }
