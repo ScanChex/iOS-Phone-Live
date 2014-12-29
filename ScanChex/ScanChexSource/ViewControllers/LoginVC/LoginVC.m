@@ -15,6 +15,8 @@
 #import "SelectionVC.h"
 #import <QuartzCore/QuartzCore.h>
 #import "AboutUsLinksVC.h"
+#import "UIAlertView+Blocks.h"
+#import "AppDelegate.h"
 @interface LoginVC ()
 
 @end
@@ -62,7 +64,10 @@
     
     self.companyID.text=[[NSUserDefaults standardUserDefaults] objectForKey:@"companyID"];
     self.userID.text=[[NSUserDefaults standardUserDefaults] objectForKey:@"userID"];
-}    
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deniedPushNotificationAccessAlert) name:PushNotificationPermissionPopup object:nil];
+
+}
 
 
 - (void)didReceiveMemoryWarning
@@ -72,6 +77,8 @@
 }
 
 - (void)dealloc {
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_companyID release];
     [_userID release];
     [_password release];
@@ -86,6 +93,7 @@
     [[NSUserDefaults standardUserDefaults] setObject:self.userID.text forKey:@"userID"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
+    
     if ([self.companyID.text length] == 0) {
         
         [self initWithPromptTitle:@"Enter Company Id" message:@"Company Id should not be empty"];
@@ -183,18 +191,26 @@
 }
 
 
-
-- (IBAction)forgotPasswordButtonPressed:(id)sender {
+-(void)deniedPushNotificationAccessAlert{
     
-    ResetPasswordVCViewController *resetVC=[ResetPasswordVCViewController initWithResetPassword];
-    [self.navigationController pushViewController:resetVC animated:YES];
+    //dispatch_async(dispatch_get_main_queue(), ^{
+       
+        __block RIButtonItem *okItem = [RIButtonItem itemWithLabel:@"OK" action:^{
+            
+            if (![[AppDelegate sharedDelegate] checkForPushNotificationPermission]) {
+                
+                [self deniedPushNotificationAccessAlert];
+            }
+        }];
+        
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Go to settings-->Notifications-->Enable ScanChex Push notification" message:@"" cancelButtonItem:okItem otherButtonItems:nil];
+        [alertView show];
+        [alertView release];
+    //});
 }
 
-- (IBAction)forgotUserIDButtonPressed:(id)sender {
-    
-    [self initWithPromptTitle:@"Forgot UserID" message:@"Forgot UserID Button Pressed"];
-    
-}
+
+
 
 -(void)resignKeyBoard
 {
@@ -202,12 +218,14 @@
     [self.userID resignFirstResponder];
     [self.password resignFirstResponder];
 }
-#pragma TextFieldDelegate
+#pragma mark -TextFieldDelegate
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
     
     [textField resignFirstResponder];
     return YES;
 }
+
+#pragma mark- IBActions
 - (IBAction)aboutUsButtonPressed:(id)sender {
     
     [self.navigationController pushViewController:[AboutUsLinksVC initWithAboutUS:@"http://scanchex.com/about-scanchex/"] animated:YES];
@@ -226,6 +244,18 @@
 - (IBAction)contactUSButtonPressed:(id)sender {
     
     [self.navigationController pushViewController:[AboutUsLinksVC initWithAboutUS:@"http://scanchex.com/contact-us/"] animated:YES];
+}
+
+- (IBAction)forgotPasswordButtonPressed:(id)sender {
+    
+    ResetPasswordVCViewController *resetVC=[ResetPasswordVCViewController initWithResetPassword];
+    [self.navigationController pushViewController:resetVC animated:YES];
+}
+
+- (IBAction)forgotUserIDButtonPressed:(id)sender {
+    
+    [self initWithPromptTitle:@"Forgot UserID" message:@"Forgot UserID Button Pressed"];
+    
 }
 
 @end

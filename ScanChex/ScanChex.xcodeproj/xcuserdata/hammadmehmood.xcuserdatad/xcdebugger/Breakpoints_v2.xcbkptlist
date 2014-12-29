@@ -511,36 +511,6 @@
             endingLineNumber = "1288"
             landmarkName = "-upadteAnswers:questIDS:answers:ticketID:withCompletionHandler:"
             landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__83-[WebServiceManager upadteAnswers:questIDS:answers:ticketID:withCompletionHandler:]_block_invoke"
-                  moduleName = "ScanChex"
-                  urlString = "file:///Users/hammadmehmood/Development/Don%20Projects/Ravi%20Final%20Code/Ravi%20Github/iPhone_version3/ScanChex%20-%2019-06-2014/VeriScanQR/Webservices/WebServiceManager.m"
-                  timestampString = "438034351.713385"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "1289"
-                  endingLineNumber = "1289"
-                  offsetFromSymbolStart = "178">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__83-[WebServiceManager upadteAnswers:questIDS:answers:ticketID:withCompletionHandler:]_block_invoke_2"
-                  moduleName = "ScanChex"
-                  urlString = "file:///Users/hammadmehmood/Development/Don%20Projects/Ravi%20Final%20Code/Ravi%20Github/iPhone_version3/ScanChex%20-%2019-06-2014/VeriScanQR/Webservices/WebServiceManager.m"
-                  timestampString = "438034351.713704"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "1289"
-                  endingLineNumber = "1289"
-                  offsetFromSymbolStart = "14">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1149,36 +1119,6 @@
             endingLineNumber = "330"
             landmarkName = "-loginWithCustomerID:userID:password:withCompletionHandler:"
             landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__79-[WebServiceManager loginWithCustomerID:userID:password:withCompletionHandler:]_block_invoke209"
-                  moduleName = "ScanChex"
-                  urlString = "file:///Users/hammadmehmood/Development/Don%20Projects/Ravi%20Final%20Code/Ravi%20Github/iPhone_version3/ScanChex%20-%2019-06-2014/VeriScanQR/Webservices/WebServiceManager.m"
-                  timestampString = "438034351.892513"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "330"
-                  endingLineNumber = "330"
-                  offsetFromSymbolStart = "146">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__79-[WebServiceManager loginWithCustomerID:userID:password:withCompletionHandler:]_block_invoke_2212"
-                  moduleName = "ScanChex"
-                  urlString = "file:///Users/hammadmehmood/Development/Don%20Projects/Ravi%20Final%20Code/Ravi%20Github/iPhone_version3/ScanChex%20-%2019-06-2014/VeriScanQR/Webservices/WebServiceManager.m"
-                  timestampString = "438034351.892734"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "330"
-                  endingLineNumber = "330"
-                  offsetFromSymbolStart = "24">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1306,6 +1246,38 @@
             startingLineNumber = "1237"
             endingLineNumber = "1237"
             landmarkName = "-uploadPdf:historyID:contentType:pdfData:progressBar:withCompletionHandler:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ScanChexSource/ViewControllers/LoginVC/LoginVC.m"
+            timestampString = "441570541.801737"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "51"
+            endingLineNumber = "51"
+            landmarkName = "-viewDidLoad"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ScanChexSource/AppDelegate/AppDelegate.m"
+            timestampString = "441570732.956993"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "69"
+            endingLineNumber = "69"
+            landmarkName = "-application:didFinishLaunchingWithOptions:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

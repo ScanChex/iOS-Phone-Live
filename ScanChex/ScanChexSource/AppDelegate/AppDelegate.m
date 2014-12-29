@@ -15,10 +15,10 @@
 #import "LoginVC.h"
 #import "UIAlertView+Blocks.h"
 
-#define MINUTES_TO_LOGOUT 1
+
+#define MINUTES_TO_LOGOUT 10
 
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
-
 
 @implementation AppDelegate
 @synthesize navController;
@@ -39,18 +39,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     
-    BOOL isFirstLaunch = [[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"];
-    if (!isFirstLaunch) {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstLaunch"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
-    else{
-        
-        if (![self checkForPushNotificationPermission]) {
-            
-            [self deniedPushNotificationAccessAlert];
-        }
-    }
+
     [[IQKeyboardManager sharedManager] setEnable:YES];
     [[IQKeyboardManager sharedManager] setEnableAutoToolbar:YES];
     [[SharedManager getInstance] setIsMessage:FALSE];
@@ -72,7 +61,7 @@
     [Flurry setAppVersion:@"1.0"];
     [Flurry startSession:@"Z55KW4WFBHXS3FZ8DV6G"];
     
-    self.viewController = [SplashVC initWithSplash];
+    self.viewController = [LoginVC initWithLogin];
     navController=[[UINavigationController alloc] initWithRootViewController:self.viewController];
     
     navController.navigationBarHidden=YES;
@@ -96,6 +85,7 @@
     // (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
     
 
+    [self performSelector:@selector(postPushNotificationIfNeeded) withObject:nil afterDelay:1.0];
     //Push Notification change for IOS 8
     if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
         
@@ -192,13 +182,35 @@
             return YES;
     }
 }
+
+-(void)postPushNotificationIfNeeded{
+
+    BOOL isFirstLaunch = [[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"];
+    if (!isFirstLaunch) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstLaunch"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    else{
+        
+        if (![self checkForPushNotificationPermission]) {
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:PushNotificationPermissionPopup object:nil];
+            //[self deniedPushNotificationAccessAlert];
+        }
+    }
+
+
+}
+
 - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
 {
 	NSLog(@"Failed to get token, error: %@", error);
     
     if (![self checkForPushNotificationPermission]) {
         
-        [self deniedPushNotificationAccessAlert];
+        [[NSNotificationCenter defaultCenter] postNotificationName:PushNotificationPermissionPopup object:nil];
+
+        //[self deniedPushNotificationAccessAlert];
     }
     //[self deniedPushNotificationAccessAlert];
 }
@@ -286,6 +298,9 @@
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     
+    [self postPushNotificationIfNeeded];
+
+    
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc]init];
     [dateFormat setDateFormat:@"MM/dd/yyyy HH:mm:ss"];
     NSString *foreGroundTime = [dateFormat stringFromDate:[NSDate date]];
@@ -303,6 +318,7 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

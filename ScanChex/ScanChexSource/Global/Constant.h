@@ -26,6 +26,9 @@
 #define MESSAGE_KEY @"Message"
 #define kUPDATE_INTERVAL 300
 
+#define PushNotificationPermissionPopup @"PushNotificationPermissionPopup"
+
+
 #define IPHONE_5_HEIGHT_DIFFERENCE 88
 
 #define DEST_PATH [NSHomeDirectory() stringByAppendingString:@"/Documents/"]

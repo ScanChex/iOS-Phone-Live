@@ -19,4 +19,6 @@
 @property (strong, nonatomic) UINavigationController *navController;
 
 +(id)sharedDelegate;
+-(BOOL)checkForPushNotificationPermission;
+
 @end
