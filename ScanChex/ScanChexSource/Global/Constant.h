@@ -42,3 +42,11 @@
 #define K_SECOND_SCAN "Second Scan"
 
 #define PDF_FILE_SHARE @"PDF_FILE_SHARE"
+
+static inline BOOL IsEmpty(id thing) {
+    return thing == nil
+    || ([thing respondsToSelector:@selector(length)]
+        && [(NSData *)thing length] == 0)
+    || ([thing respondsToSelector:@selector(count)]
+        && [(NSArray *)thing count] == 0);
+}

@@ -24,7 +24,6 @@
 
 @interface ShowQuestionsVC ()
 
--(id)initWithData:(NSArray*)data;
 -(void)updateGUI;
 -(BOOL)isAllFilled;
 -(NSMutableArray *)buildQuestionsArray;
@@ -132,7 +131,8 @@
     return self;
 }
 - (void)viewDidLoad
-{
+{    [super viewDidLoad];
+
     for (UIView *v in [self.view subviews]) {
         if ([v isKindOfClass:[UIButton class]]) {
             if ([[[(UIButton*)v titleLabel] text] isEqualToString:@"SUBMIT"]) {
@@ -142,7 +142,6 @@
         }
     }
      [self.view setBackgroundColor:[NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"color"]]];
-    [super viewDidLoad];
      if (![[VSSharedManager sharedManager] isPreview]) {
          [self.submitButtonl setHidden:NO];
          
@@ -189,8 +188,8 @@
   
   if ([self isAllFilled]) {
     // if ([self.delegate respondsToSelector:@selector(allQuestionsAnswered)]) {
-    [self.delegate allQuestionsAnswered];
-     self.isSubmited =YES;
+      [self.delegate allQuestionsAnswered];
+      self.isSubmited =YES;
     //  }
   }
 }
@@ -280,7 +279,8 @@
         
         if(question.questionType ==1){
         
-            if (question.isTrue || question.isFalse || !([question.questionAnswer isKindOfClass:[NSNull class]])) {
+            
+            if (question.isTrue || question.isFalse || !IsEmpty(question.questionAnswer)) {
                 
                 //do nothing 
             }
@@ -290,7 +290,7 @@
         }
         else if(question.questionType ==2){
         
-            if ((question.selectedOption!=0)  || !([question.questionAnswer isKindOfClass:[NSNull class]])) {
+            if ((question.selectedOption!=0)  || !IsEmpty(question.questionAnswer)) {
                 
                 //do nothing
             }
@@ -299,7 +299,7 @@
         }
         else if(question.questionType ==3){
         
-            if (([question.fieldValue length]>0) || !([question.questionAnswer isKindOfClass:[NSNull class]])) {
+            if (([question.fieldValue length]>0) || !IsEmpty(question.questionAnswer)) {
                 
                 // do nothing
             }
@@ -403,7 +403,7 @@
     
     // Dismisses the keyboard when the "Done" button is clicked
     
-    int z = textField.tag;
+   // int z = textField.tag;
     
 //    if (!IS_IPHONE5) {
 //        
@@ -436,7 +436,7 @@
     return YES;
 }
 -(void)textFieldDidEndEditing:(UITextField *)textField {
-    int z = textField.tag;
+  //  int z = textField.tag;
     
 //    if (!IS_IPHONE5) {
 //        
@@ -470,10 +470,10 @@
 
 -(void) textFieldDidBeginEditing:(UITextField *)textField {
     
-    int z = textField.tag;
+   // int z = textField.tag;
     
-    CGPoint pnt = [self.questionTable convertPoint:textField.bounds.origin fromView:textField];
-    NSIndexPath* path = [self.questionTable indexPathForRowAtPoint:pnt];
+  //  CGPoint pnt = [self.questionTable convertPoint:textField.bounds.origin fromView:textField];
+   // NSIndexPath* path = [self.questionTable indexPathForRowAtPoint:pnt];
     
     
 //    if (!IS_IPHONE5) {

@@ -54,16 +54,17 @@
     if (IS_IPHONE5) {
    
         
-        return [[[AssetVC alloc] initWithNibName:@"AssetiPhone5VC" bundle:nil] autorelease];
+        return [[AssetVC alloc] initWithNibName:@"AssetiPhone5VC" bundle:nil] ;
     }
     
-    return [[[AssetVC alloc] initWithNibName:@"AssetVC" bundle:nil] autorelease];
+    return [[AssetVC alloc] initWithNibName:@"AssetVC" bundle:nil];
 }
 
 - (void)viewDidLoad
 {
-     [self.view setBackgroundColor:[NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"color"]]];
     [super viewDidLoad];
+
+     [self.view setBackgroundColor:[NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"color"]]];
     // Do any additional setup after loading the view from its nib.
     self.scannedImage.layer.masksToBounds = YES;
     //imageView.layer.cornerRadius = 5.0;
@@ -98,6 +99,7 @@
     self.remaining.text=[NSString stringWithFormat:@"%@",ticket.remainingCodes];
     self.scannedCodes.text=[NSString stringWithFormat:@"%@",ticket.scannedCodes];
     self.assetDescription.text =[NSString stringWithFormat:@"%@",ticket.description];
+    
     
     if (![ticket.assetPhoto isKindOfClass:[NSNull class]])
     {
@@ -338,30 +340,7 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [_scannedImage release];
-    [_assetID release];
-    [_address release];
-    [_totalCodes release];
-    [_scannedCodes release];
-    [_remaining release];
-    [_assetDescription release];
-    [_scrollView release];
-    [_serviceTable release];
-    [_checkpointCheckArray release];
-    [super dealloc];
+    [self setDelegate:nil];
 }
-- (void)viewDidUnload {
-    [self setScannedImage:nil];
-    [self setAssetID:nil];
-    [self setAddress:nil];
-    [self setTotalCodes:nil];
-    [self setScannedCodes:nil];
-    [self setRemaining:nil];
-    [self setAssetDescription:nil];
-    [super viewDidUnload];
-}
-
-
-
 
 @end

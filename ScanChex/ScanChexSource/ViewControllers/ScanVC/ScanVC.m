@@ -69,30 +69,12 @@
 
 @implementation ScanVC
 
-@synthesize assetsView=_assetsView;
-@synthesize documentsView=_documentsView;
-@synthesize historyView=_historyView;
-@synthesize questionView=_questionView;
-@synthesize mapView=_mapView;
-@synthesize savePath=_savePath;
-
-@synthesize myProgressIndicator=_myProgressIndicator;
-@synthesize recoder=_recoder;
-@synthesize isSecondScan = _isSecondScan;
-@synthesize scanQRManager = _scanQRManager;
-@synthesize audioArray = _audioArray;
-@synthesize videoArray = _videoArray;
-@synthesize receivedArray = _receivedArray;
-@synthesize notesimageSign = _notesimageSign;
-@synthesize questionsimageSign = _questionsimageSign;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        _audioArray = [[NSMutableArray alloc] initWithObjects:nil];
-        _videoArray = [[NSMutableArray alloc] initWithObjects:nil];
-        self.historyArray = [[NSMutableArray alloc]initWithObjects:nil];
+        
         [[VSSharedManager sharedManager] setIsPreview:FALSE];
         self.isScanHidden = FALSE;
         self.isScanning = FALSE;
@@ -114,8 +96,7 @@
 - (id)initWithhiddenScan:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        _audioArray = [[NSMutableArray alloc] initWithObjects:nil];
-        _videoArray = [[NSMutableArray alloc] initWithObjects:nil];
+      
         [[VSSharedManager sharedManager] setIsPreview:TRUE];
         [self.btnSecondScan setEnabled:NO];
         self.isScanHidden = TRUE;
@@ -128,8 +109,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        _audioArray = [[NSMutableArray alloc] initWithObjects:nil];
-        _videoArray = [[NSMutableArray alloc] initWithObjects:nil];
+        
         [[VSSharedManager sharedManager] setIsPreview:TRUE];
         self.isScanHidden = FALSE;
         [self.btnSecondScan setEnabled:YES];
@@ -140,6 +120,11 @@
 #pragma -mark Life Cycle
 - (void)viewDidLoad
 {
+    [super viewDidLoad];
+    self.audioArray = [NSMutableArray array];
+    self.videoArray = [NSMutableArray array];
+    self.historyArray = [NSMutableArray array];
+    
     TicketDTO *ticketAsset =[[VSSharedManager sharedManager] selectedTicket];
     
 
@@ -184,7 +169,7 @@
     
     self.count = 1;
      [self.view setBackgroundColor:[NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"color"]]];
-    [super viewDidLoad];
+
     // Do any additional setup after loading the view from its nib.
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCode:) name:K_Update_ScanCode object:nil];
@@ -202,6 +187,7 @@
     
     if ([[VSSharedManager sharedManager] isPreview]) {
         [self.backButton setTitle:@"RETURN" forState:UIControlStateNormal];
+        self.suspendButton.hidden = YES;
     }
 
     else {
@@ -252,7 +238,8 @@
   
 //    self.view.backgroundColor=[UIColor blackColor];
     [self.segmentControl setSelectedSegmentIndex:0];
-    [self performSelector:@selector(segmentChanged:)];
+   // [self segmentChanged:self.segmentControl];
+   // [self performSelector:@selector(segmentChanged:)];
 //     [self timerRepeat];
 //    self.startTimer = [NSTimer scheduledTimerWithTimeInterval:60.0
 //                       
@@ -266,11 +253,12 @@
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
-    [_scanQRManager release];
-    _scanQRManager = nil;
-    
-
     [super viewWillDisappear:animated];
+   
+    // [_scanQRManager release];
+    // _scanQRManager = nil;
+    
+    
     
 }
 
@@ -283,24 +271,10 @@
 - (void)dealloc {
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [_segmentControl release];
-    [_btnSecondScan release];
-    [_audioArray release];
-    [_videoArray release];
-    [_scanQRManager release];
-    _scanQRManager = nil;
-    [_assetsView release];
-    _assetsView = nil;
-    [_startTimer invalidate];
-    _startTimer = nil;
-    [_suspendButton release];
-    [_alertText release];
-    [super dealloc];
+   
 }
-- (void)viewDidUnload {
-    [self setSegmentControl:nil];
-    [super viewDidUnload];
-}
+
+
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self segmentChanged:self.segmentControl];
@@ -333,10 +307,10 @@
 }
 
 - (NSString*) fileMIMEType:(NSString*) file {
-    CFStringRef UTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (CFStringRef)[file pathExtension], NULL);
+    CFStringRef UTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)[file pathExtension], NULL);
     CFStringRef MIMEType = UTTypeCopyPreferredTagWithClass (UTI, kUTTagClassMIMEType);
     CFRelease(UTI);
-    return [(NSString *)MIMEType autorelease];
+    return [(__bridge NSString *)MIMEType autorelease];
 }
 
 -(void)setImageAspectRatio:(UIImage *)picture{
@@ -559,6 +533,7 @@
 
 - (IBAction)menuButtonPressed:(id)sender {
     if ([[VSSharedManager sharedManager] isPreview]) {
+       
         [self.navigationController popViewControllerAnimated:YES];
     }
     else {
@@ -810,6 +785,8 @@
                                                     if (!error)
                                                     {
                                                         [self.backButton setTitle:@"CLOSE TICKET" forState:UIControlStateNormal];
+                                                        self.suspendButton.hidden = NO;
+
                                                         TicketInfoDTO *ticketInfoDTO = [[VSSharedManager sharedManager] selectedTicketInfo];
                                                         if (![ticketAsset.assetType isEqualToString:@"inspection"])
                                                         {
@@ -1108,9 +1085,9 @@
             [self downloadVideoWithURL:self.receivedArray];
         }
         else {
-            if ([self fileExistsAtAbsolutePath:[_videoArray objectAtIndex:0]]) {
+            if ([self fileExistsAtAbsolutePath:[self.videoArray objectAtIndex:0]]) {
                 NSMutableArray * tempArray = [NSMutableArray array];
-                for (int i =0; i<[_videoArray count]; i++) {
+                for (int i =0; i<[self.videoArray count]; i++) {
                     [tempArray addObject:[NSString stringWithFormat:@"Video %d",i+1]];
                 }
                 [MMPickerView showPickerViewInView:self.view
@@ -1119,7 +1096,7 @@
                                         completion:^(NSString *selectedString) {
                                             
                                             int i =   [tempArray indexOfObject:selectedString];
-                                            [self openVideoWithPath:[_videoArray objectAtIndex:i]];
+                                            [self openVideoWithPath:[self.videoArray objectAtIndex:i]];
                                         }];
                 
                 //           [self openVideoWithPath:[_videoArray objectAtIndex:0]];
@@ -1206,12 +1183,12 @@
 
 -(void)downloadVideoWithURL:(NSArray *)path
 {
-    [_videoArray removeAllObjects];
+    [self.videoArray removeAllObjects];
     _receivedArray = path;
      NSMutableArray * tempArray = [[[NSMutableArray alloc] initWithObjects:nil] autorelease];
     for (int i = 0; i<[path count]; i++) {
         if ([self fileExistsAtAbsolutePath:[NSString stringWithFormat:@"%@%@",DEST_PATH,[[[path objectAtIndex:i] objectForKey:@"video"] lastPathComponent]]]) {
-            [_videoArray addObject:[NSString stringWithFormat:@"%@%@",DEST_PATH,[[[path objectAtIndex:i] objectForKey:@"video"] lastPathComponent]]];
+            [self.videoArray addObject:[NSString stringWithFormat:@"%@%@",DEST_PATH,[[[path objectAtIndex:i] objectForKey:@"video"] lastPathComponent]]];
         }
         else {
             [tempArray addObject:[path objectAtIndex:i]];
@@ -1225,9 +1202,9 @@
         //        }
     }
     else {
-        if ([self fileExistsAtAbsolutePath:[_videoArray objectAtIndex:0]]) {
+        if ([self fileExistsAtAbsolutePath:[self.videoArray objectAtIndex:0]]) {
             NSMutableArray * tempArray = [NSMutableArray array];
-            for (int i =0; i<[_videoArray count]; i++) {
+            for (int i =0; i<[self.videoArray count]; i++) {
                 [tempArray addObject:[NSString stringWithFormat:@"Video %d",i+1]];
             }
             [MMPickerView showPickerViewInView:self.view
@@ -1236,7 +1213,7 @@
                                     completion:^(NSString *selectedString) {
                                         
                                       int i =   [tempArray indexOfObject:selectedString];
-                                        [self openVideoWithPath:[_videoArray objectAtIndex:i]];
+                                        [self openVideoWithPath:[self.videoArray objectAtIndex:i]];
                                     }];
             
 //           [self openVideoWithPath:[_videoArray objectAtIndex:0]];
@@ -1262,12 +1239,12 @@
 
 -(void)downloadAudioWithURL:(NSArray *)path
 {
-    [_audioArray removeAllObjects];
+    [self.audioArray removeAllObjects];
     _receivedArray = path;
     NSMutableArray * tempArray = [[[NSMutableArray alloc] initWithObjects:nil] autorelease];
     for (int i = 0; i<[path count]; i++) {
         if ([self fileExistsAtAbsolutePath:[NSString stringWithFormat:@"%@%@",DEST_PATH,[[[path objectAtIndex:i] objectForKey:@"audio"] lastPathComponent]]]) {
-            [_audioArray addObject:[NSString stringWithFormat:@"%@%@",DEST_PATH,[[[path objectAtIndex:i] objectForKey:@"audio"] lastPathComponent]]];
+            [self.audioArray addObject:[NSString stringWithFormat:@"%@%@",DEST_PATH,[[[path objectAtIndex:i] objectForKey:@"audio"] lastPathComponent]]];
         }
         else {
             [tempArray addObject:[path objectAtIndex:i]];
@@ -1281,9 +1258,9 @@
 //        }
     }
     else {
-        if ([self fileExistsAtAbsolutePath:[_audioArray objectAtIndex:0]]) {
+        if ([self fileExistsAtAbsolutePath:[self.audioArray objectAtIndex:0]]) {
             
-            [self.navigationController pushViewController:[AudioPlayerVC initWithAudioPlayer:_audioArray] animated:YES];
+            [self.navigationController pushViewController:[AudioPlayerVC initWithAudioPlayer:self.audioArray] animated:YES];
             ////Display that file
         }
 //            else{

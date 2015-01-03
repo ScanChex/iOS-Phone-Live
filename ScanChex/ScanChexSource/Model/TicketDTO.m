@@ -55,7 +55,7 @@
     self.totalCodes         = [dictionary valueForKey:@"total_codes"];
     self.remainingCodes     = [dictionary valueForKey:@"remained_codes"];
     self.scannedCodes       = [dictionary valueForKey:@"scanned_codes"];
-    self.assetPhoto         = [dictionary valueForKey:@"asset_photo"];
+    self.assetPhoto         = [[dictionary valueForKey:@"asset_photo"] description];
     self.assetType          = [dictionary valueForKey:@"asset_type"];
     self.description        = [dictionary valueForKey:@"description"];
     self.assetCode          = [dictionary valueForKey:@"asset_code"];

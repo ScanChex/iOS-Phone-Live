@@ -57,24 +57,13 @@
     return [[[TicketsVC alloc] initWithNibName:@"TicketsVC" bundle:nil] autorelease];
 }
 
--(void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    if ([[SharedManager getInstance] isMessage]) {
-        [self.lblMessage setHidden:YES];
-        [self.imgAlert setImage:[UIImage imageNamed:@"Chat.png"]];
-    }
-    else {
-        [self.lblMessage setHidden:NO];
-        [self.imgAlert setImage:nil];
-    }
-    [self updateTickets];
-    [self updateMessagesFromServer];
-}
+
 - (void)viewDidLoad
 {
+    [super viewDidLoad];
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageNotification:) name:kPushReceived object:nil];
      [self.view setBackgroundColor:[NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"color"]]];
-    [super viewDidLoad];
     if ([[SharedManager getInstance] isMessage]) {
         [self.lblMessage setHidden:YES];
         [self.imgAlert setImage:[UIImage imageNamed:@"Chat.png"]];
@@ -85,7 +74,8 @@
          }
     // Do any additional setup after loading the view from its nib.
     
-    
+    // [self updateTickets];
+
    // [[VSLocationManager sharedManager] startListening];
     [self performSelector:@selector(updateUserLocation) withObject:nil afterDelay:30];
     
@@ -96,18 +86,26 @@
     
     [self.ticketsTable addSubview:refreshControl];
 
+
     
    // [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUserLocationNotification) name:UPDATE_LOCATION_NOTIFICATION object:nil];
-    
-
 }
 
-//-(void)viewWillAppear:(BOOL)animated{
-//
-//    [super viewWillAppear:animated];
-//    
-//
-//}
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if ([[SharedManager getInstance] isMessage]) {
+        [self.lblMessage setHidden:YES];
+        [self.imgAlert setImage:[UIImage imageNamed:@"Chat.png"]];
+    }
+    else {
+        [self.lblMessage setHidden:NO];
+        [self.imgAlert setImage:nil];
+    }
+    
+    
+    [self updateTickets];
+    [self updateMessagesFromServer];
+}
 
 -(void)updateMessagesFromServer
 {
@@ -170,7 +168,6 @@
 
     [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeBlack];
   
-    [self.tickets removeAllObjects];
     UserDTO*user=[[VSSharedManager sharedManager] currentUser];
     
     [[WebServiceManager sharedManager] getTickets:[NSString stringWithFormat:@"%d",user.masterKey] fromDate:nil toDate:nil userName:[[NSUserDefaults standardUserDefaults] objectForKey:@"userID"] withCompletionHandler:^(id data,BOOL error){
@@ -179,7 +176,7 @@
         
         if (!error) {
             
-            // self.ticketData=(TicketDTO*)data;
+            [self.tickets removeAllObjects];
             self.tickets=[NSMutableArray arrayWithArray:(NSMutableArray*)data];
             [self.ticketsTable reloadData];
         }
@@ -252,25 +249,13 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [self.tickets release];
+    [_tickets release];
     [_logo release];
     [_ticketsTable release];
     [_messages release];
     [_messageLbl release];
     [_messageImage release];
-    [super dealloc];
 }
-- (void)viewDidUnload {
-    
-    self.tickets=nil;
-    [self setLogo:nil];
-    [self setTicketsTable:nil];
-    [self setMessages:nil];
-    [self setMessageLbl:nil];
-    [self setMessageImage:nil];
-    [super viewDidUnload];
-}
-
 
 #pragma mark- TableViewDelegate
 

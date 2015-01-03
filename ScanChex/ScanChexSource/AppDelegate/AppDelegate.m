@@ -21,13 +21,11 @@
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 
 @implementation AppDelegate
-@synthesize navController;
 
 - (void)dealloc
 {
-    [navController release];
+    [_navController release];
     [_window release];
-    [_viewController release];
     [super dealloc];
 }
 
@@ -62,11 +60,11 @@
     [Flurry startSession:@"Z55KW4WFBHXS3FZ8DV6G"];
     
     self.viewController = [LoginVC initWithLogin];
-    navController=[[UINavigationController alloc] initWithRootViewController:self.viewController];
+    _navController=[[UINavigationController alloc] initWithRootViewController:self.viewController];
     
-    navController.navigationBarHidden=YES;
-    navController.navigationBar.translucent = NO;
-    self.window.rootViewController = navController;
+    self.navController.navigationBarHidden=YES;
+    self.navController.navigationBar.translucent = NO;
+    self.window.rootViewController = self.navController;
     [self.window makeKeyAndVisible];
     UIFont *Boldfont = [UIFont boldSystemFontOfSize:10.0f];
     

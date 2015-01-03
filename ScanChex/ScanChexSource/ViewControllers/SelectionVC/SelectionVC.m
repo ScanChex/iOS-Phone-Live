@@ -14,6 +14,7 @@
 #import "SharedManager.h"
 #import "AboutUsLinksVC.h"
 #import "VSLocationManager.h"
+
 @interface SelectionVC ()
 -(void)updateTickets;
 
@@ -21,8 +22,6 @@
 
 @implementation SelectionVC
 
-@synthesize name=_name;
-@synthesize logo=_logo;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -105,8 +104,8 @@
 
     UserDTO *user=[[VSSharedManager sharedManager] currentUser];
     self.name.text=user.name;
-  self.logo.layer.borderWidth=3.0;
-  self.logo.layer.borderColor=[UIColor lightGrayColor].CGColor;
+    self.logo.layer.borderWidth=3.0;
+    self.logo.layer.borderColor=[UIColor lightGrayColor].CGColor;
   
   
     if (![user.logo isKindOfClass:[NSNull class]])

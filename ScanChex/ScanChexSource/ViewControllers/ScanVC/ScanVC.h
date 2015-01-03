@@ -65,6 +65,5 @@
 -(void)assetScanNotification:(NSNotification*)notif;
 - (NSString *)elapsedTimeSince:(NSDate *)date;
 -(void)timerRepeat;
--(void)save:(id)sender;
 -(void)showDirections;
 @end

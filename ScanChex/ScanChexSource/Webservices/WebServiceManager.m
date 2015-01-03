@@ -268,13 +268,14 @@ static WebServiceManager *sharedInstance;
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/veriscanAPI.php",BASE_URL]];
     
     __block  ASIFormDataRequest *request = [self createRequest:url];
-    
+    //[[[UIDevice currentDevice] identifierForVendor] UUIDString]
+    NSString * deviceTokenString  =[[NSUserDefaults standardUserDefaults] objectForKey:@"apns_device_token"];
+
     [request setRequestMethod:@"POST"];
     [request setPostValue:customerId forKey:@"company_id"];
     [request setPostValue:userID forKey:@"username"];
     [request setPostValue:password forKey:@"password"];
-    [request setPostValue:[[[UIDevice currentDevice] identifierForVendor] UUIDString] forKey:@"uuid"];
-    NSString * deviceTokenString  =[[NSUserDefaults standardUserDefaults] objectForKey:@"apns_device_token"];
+    [request setPostValue:deviceTokenString forKey:@"uuid"];
     [request setPostValue:deviceTokenString forKey:@"device_token"];
 //    UIAlertView * tempAlert = [[UIAlertView alloc] initWithTitle:@"DeviceToken login" message:tempString delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 //    [tempAlert show];
@@ -1759,7 +1760,10 @@ withCompletionHandler:(CompletionHandler)handler
     [request setRequestMethod:@"POST"];
     [request setPostValue:masterKey forKey:@"master_key"];
     [request setPostValue:@"employees_list" forKey:@"action"];
-    [request setPostValue:[[[UIDevice currentDevice] identifierForVendor] UUIDString] forKey:@"udid"];
+    
+    NSString * deviceTokenString  =[[NSUserDefaults standardUserDefaults] objectForKey:@"apns_device_token"];
+//[[[UIDevice currentDevice] identifierForVendor] UUIDString]
+    [request setPostValue:deviceTokenString forKey:@"udid"];
     [request setCompletionBlock:^{
         
         NSString *response = [request responseString];
