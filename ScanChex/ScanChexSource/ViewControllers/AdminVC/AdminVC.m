@@ -61,7 +61,7 @@
     self.logo.layer.borderColor=[UIColor lightGrayColor].CGColor;
   
   
-    if (![user.logo isKindOfClass:[NSNull class]])
+    if (!IsEmpty(user.logo))
         [self.logo setImageURL:[NSURL URLWithString:user.logo]];
     
     VSLocationManager *locationManager = [VSLocationManager sharedManager];

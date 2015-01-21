@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
-        <deployment version="1072" defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <deployment version="1072" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ScanVC">
             <connections>
                 <outlet property="backButton" destination="8" id="KMC-Eq-YkP"/>
                 <outlet property="btnSecondScan" destination="14" id="16"/>
+                <outlet property="companyLogo" destination="5" id="04N-6I-FA9"/>
                 <outlet property="notesimageSign" destination="kLl-x4-KDi" id="heT-yH-CWp"/>
                 <outlet property="questionsimageSign" destination="hcv-yD-6Df" id="YSe-TR-qR3"/>
                 <outlet property="scrollView" destination="og6-fK-JFI" id="yfQ-rQ-lYp"/>

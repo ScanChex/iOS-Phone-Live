@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "AsynchRoundedUIImageView.h"
 #import "iCarousel.h"
+#import "AsyncImageView.h"
+
 @interface ImageViewVC : BaseVC<iCarouselDataSource,iCarouselDelegate>
 
 @property(retain, nonatomic) IBOutlet AsynchRoundedUIImageView *imageView;
@@ -19,6 +21,7 @@
 @property (retain , nonatomic) IBOutlet UILabel * countLabel;
 @property (assign) NSInteger currentSelectedIndex;
 
+@property (retain, nonatomic) IBOutlet AsyncImageView *companyLogo;
 +(id)initWithURL:(NSArray *)imageURLString;
 
 -(IBAction)backButtonPressed:(id)sender;

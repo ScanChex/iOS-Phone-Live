@@ -17,6 +17,8 @@
 #import "AboutUsLinksVC.h"
 #import "UIAlertView+Blocks.h"
 #import "AppDelegate.h"
+#import "UIImageView+WebCache.h"
+
 @interface LoginVC ()
 
 @end
@@ -65,6 +67,14 @@
     self.companyID.text=[[NSUserDefaults standardUserDefaults] objectForKey:@"companyID"];
     self.userID.text=[[NSUserDefaults standardUserDefaults] objectForKey:@"userID"];
 
+    UserDTO *userDTO  = [self loadUserObjectWithKey:@"user"];
+    
+    if (!IsEmpty(userDTO.company_logo)) {
+        
+        [self.companyLogo sd_setImageWithURL:[NSURL URLWithString:userDTO.company_logo] placeholderImage:[UIImage imageNamed:@"logo.png"]];
+
+    }
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deniedPushNotificationAccessAlert) name:PushNotificationPermissionPopup object:nil];
 
 }
@@ -82,6 +92,7 @@
     [_companyID release];
     [_userID release];
     [_password release];
+    [_companyLogo release];
     [super dealloc];
 }
 
@@ -140,7 +151,6 @@
               
               [self saveUserObject:user];
               
-            
                 [self.navigationController pushViewController:[SelectionVC initWithSelection] animated:YES];
             }
           

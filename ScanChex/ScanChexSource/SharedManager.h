@@ -12,6 +12,17 @@
 + (NSDate *)dateFromString:(NSString *)str withFormat:(NSString *)format;
 + (NSString *)stringFromDate:(NSDate *)date withFormat:(NSString *)format;
 
++(UIImage*) drawImage:(UIImage*) fgImage
+              inImage:(UIImage*) bgImage
+              atPoint:(CGPoint)  point;
+
++(UIImage*)drawFront:(UIImage*)image text:(NSString*)text atPoint:(CGPoint)point;
+
+
+
+-(UserDTO *)loadUserObjectWithKey:(NSString*)key;
+
+
 @property (nonatomic, assign)BOOL isMessage;
 @property (nonatomic,assign) BOOL isEditable;
 

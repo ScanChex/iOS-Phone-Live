@@ -302,7 +302,7 @@ static WebServiceManager *sharedInstance;
             ///Block Calling
             dispatch_async(dispatch_get_main_queue(), ^{
                 
-                block(rootDictionary,NO);
+                block([UserDTO userWithDictionary:rootDictionary],NO);
             });
             
         }

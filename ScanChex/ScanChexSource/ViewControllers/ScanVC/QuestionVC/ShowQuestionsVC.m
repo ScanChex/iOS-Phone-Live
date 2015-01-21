@@ -60,8 +60,11 @@
 //    }
   
 //    if (![[VSSharedManager sharedManager] isPreview]) {
-//    
+//
+    if (![[VSSharedManager sharedManager] isPreview]) {
+
         [self.delegate notesButtonPressed];
+     }
 //    }
 
 }

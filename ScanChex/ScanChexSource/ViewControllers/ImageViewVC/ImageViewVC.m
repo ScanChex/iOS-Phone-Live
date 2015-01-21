@@ -7,6 +7,8 @@
 //
 
 #import "ImageViewVC.h"
+#import "SharedManager.h"
+#import "UIImageView+WebCache.h"
 
 @interface ImageViewVC ()
 
@@ -61,6 +63,14 @@
     [self.carousel reloadData];
     [self setCurrentSelectedIndex:0];
     [self.countLabel setText:[NSString stringWithFormat:@"Image %d of %d",self.currentSelectedIndex+1,[self.imageURL count]]];
+    
+    UserDTO *userDTO = [[SharedManager getInstance] loadUserObjectWithKey:@"user"];
+    
+    if (!IsEmpty(userDTO.company_logo)) {
+        
+        [self.companyLogo sd_setImageWithURL:[NSURL URLWithString:userDTO.company_logo] placeholderImage:[UIImage imageNamed:@"logo.png"]];
+    }
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -161,5 +171,9 @@
     }
     //    [self.countLabel setText:[NSString stringWithFormat:@"Note %d of %d",self.currentSelectedIndex+1,[self.notesString count]]];
     
+}
+- (void)dealloc {
+    [_companyLogo release];
+    [super dealloc];
 }
 @end

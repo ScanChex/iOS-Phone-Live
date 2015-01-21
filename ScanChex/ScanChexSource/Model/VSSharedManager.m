@@ -61,7 +61,7 @@ static VSSharedManager *sharedInstance;
             MKMapItem *mapItem_end = [[[MKMapItem alloc] initWithPlacemark:placemark_end] autorelease];
             
             //You can name the object
-            [mapItem_end setName:address.unEncryptedAssetID];
+            [mapItem_end setName:address.clientName];
             
             
             /** create start location **/

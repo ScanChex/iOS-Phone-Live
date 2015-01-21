@@ -14,6 +14,7 @@
 #import "SharedManager.h"
 #import "AboutUsLinksVC.h"
 #import "VSLocationManager.h"
+#import "UIImageView+WebCache.h"
 
 @interface SelectionVC ()
 -(void)updateTickets;
@@ -111,6 +112,13 @@
     if (![user.logo isKindOfClass:[NSNull class]])
         [self.logo setImageURL:[NSURL URLWithString:user.logo]];
     
+    UserDTO *userDTO = [[SharedManager getInstance] loadUserObjectWithKey:@"user"];
+    
+    if (!IsEmpty(userDTO.company_logo)) {
+        
+        [self.companyLogo sd_setImageWithURL:[NSURL URLWithString:userDTO.company_logo] placeholderImage:[UIImage imageNamed:@"logo.png"]];
+    }
+    
     if (IS_IPHONE5) {
         
 //        self.messageView.frame = CGRectMake(self.messageView.frame.origin.x, self.messageView.frame.origin.y + IPHONE_5_HEIGHT_DIFFERENCE ,self.messageView.frame.size.width, self.messageView.frame.size.height );
@@ -163,23 +171,23 @@
 
 -(void)updateTickets{
 
-    [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeBlack];
+//    [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeBlack];
+//    
+//    UserDTO*user=[[VSSharedManager sharedManager] currentUser];
+//    
+//    [[WebServiceManager sharedManager] getTickets:[NSString stringWithFormat:@"%d",user.masterKey] fromDate:nil toDate:nil userName:[[NSUserDefaults standardUserDefaults] objectForKey:@"userID"] withCompletionHandler:^(id data,BOOL error){
+//        
+//        [SVProgressHUD dismiss];
+//        
+//        if (!error) {
     
-    UserDTO*user=[[VSSharedManager sharedManager] currentUser];
-    
-    [[WebServiceManager sharedManager] getTickets:[NSString stringWithFormat:@"%d",user.masterKey] fromDate:nil toDate:nil userName:[[NSUserDefaults standardUserDefaults] objectForKey:@"userID"] withCompletionHandler:^(id data,BOOL error){
-        
-        [SVProgressHUD dismiss];
-        
-        if (!error) {
-            
                 [self.navigationController pushViewController:[MapVC initWithMap:YES] animated:YES];
-                
-        }
-        else
-            [self initWithPromptTitle:@"Error" message:(NSString *)data];
-        
-    }];
+//                
+//        }
+//        else
+//            [self initWithPromptTitle:@"Error" message:(NSString *)data];
+//        
+//    }];
     
     
 }
@@ -225,6 +233,7 @@
     [_imgAlert release];
     [_lblMessage release];
     [_btnMessage release];
+    [_companyLogo release];
     [super dealloc];
 }
 @end

@@ -19,6 +19,7 @@
 #import "RoutesViewController.h"
 #import "SharedManager.h"
 #import "MessageCentreVC.h"
+#import "UIImageView+WebCache.h"
 
 @interface TicketsVC ()
 
@@ -86,8 +87,14 @@
     
     [self.ticketsTable addSubview:refreshControl];
 
-
     
+    UserDTO *userDTO = [[SharedManager getInstance] loadUserObjectWithKey:@"user"];
+    
+    if (!IsEmpty(userDTO.company_logo)) {
+        
+        [self.logo sd_setImageWithURL:[NSURL URLWithString:userDTO.company_logo] placeholderImage:[UIImage imageNamed:@"logo.png"]];
+    }
+
    // [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUserLocationNotification) name:UPDATE_LOCATION_NOTIFICATION object:nil];
 }
 
@@ -286,7 +293,7 @@
     if(ticket.unEncryptedAssetID == nil)
         return @"";
     
-    return [NSString stringWithFormat:@" %@",ticket.unEncryptedAssetID];
+    return [NSString stringWithFormat:@" %@",ticket.clientName];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

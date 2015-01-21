@@ -18,6 +18,7 @@
 @property (retain, nonatomic) IBOutlet UIImageView *imgAlert;
 @property (retain, nonatomic) IBOutlet UILabel *lblMessage;
 @property (retain, nonatomic) IBOutlet UIButton *btnMessage;
+@property (retain, nonatomic) IBOutlet UIImageView *companyLogo;
 
 +(id)initWithSelection;
 -(IBAction)ticketsButtonPressed:(id)sender;

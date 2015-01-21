@@ -14,6 +14,8 @@
 #import "SVProgressHUD.h"
 #import <QuartzCore/QuartzCore.h>
 #import "VSSharedManager.h"
+#import "UIImageView+WebCache.h"
+
 #define FONT_SIZE 13.0f
 #define CELL_CONTENT_WIDTH 320.0f
 #define CELL_CONTENT_MARGIN 14.0f
@@ -66,6 +68,16 @@
     }
     [self.messageTable.layer setCornerRadius:10.0f];
     UserDTO *user=[[VSSharedManager sharedManager] currentUser];
+    
+    
+    UserDTO *userDTO = [[SharedManager getInstance] loadUserObjectWithKey:@"user"];
+    
+    if (!IsEmpty(userDTO.company_logo)) {
+        
+        [self.companyLogo sd_setImageWithURL:[NSURL URLWithString:userDTO.company_logo] placeholderImage:[UIImage imageNamed:@"logo.png"]];
+    }
+
+    
     self.name.text=user.name;
     self.automaticallyAdjustsScrollViewInsets = NO;
     UIRefreshControl *refreshControl = [[[UIRefreshControl alloc] init] autorelease];
@@ -268,6 +280,7 @@
 }
 - (void)dealloc {
     [_messageTable release];
+    [_companyLogo release];
     [super dealloc];
 }
 

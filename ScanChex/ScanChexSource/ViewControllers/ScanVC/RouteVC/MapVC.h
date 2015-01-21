@@ -8,14 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
-
-@interface MapVC : UIViewController<MKMapViewDelegate,UITableViewDelegate,UITableViewDataSource>
+#import "BaseVC.h"
+@interface MapVC : BaseVC<MKMapViewDelegate,UITableViewDelegate,UITableViewDataSource>
 @property (retain, nonatomic) IBOutlet MKMapView *mapView;
 @property (retain, nonatomic) IBOutlet UITableView *routeTable;
 @property (retain, nonatomic) IBOutlet UILabel *totalCodes;
 @property (retain, nonatomic) IBOutlet UILabel *scannedCodes;
 @property (retain, nonatomic) IBOutlet UILabel *remainingCodes;
-@property (nonatomic,retain) NSArray *tickets;
+@property (nonatomic,retain) NSMutableArray *tickets;
 
 - (IBAction)backButtonPressed:(id)sender;
 - (IBAction)currentLocationButtonPressed:(id)sender;

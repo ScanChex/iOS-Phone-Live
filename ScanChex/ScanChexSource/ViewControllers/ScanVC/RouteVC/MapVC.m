@@ -15,6 +15,8 @@
 #import "TicketCell.h"
 #import "VSLocationManager.h"
 #import "RoutesViewController.h"
+#import "ScanVC.h"
+#import "WebServiceManager.h"
 
 @interface MapVC ()
 
@@ -89,10 +91,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.isCurrentLocation= NO;
-    [self updateGUI];
-    [self initalizeMap];
-    [self plotLocationPositions];
+    
     
     
 //    NSArray *coordinates = [self.mapView valueForKeyPath:@"annotations"];
@@ -106,8 +105,39 @@
     
     //[self plotLocationPositions];
 }
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    self.isCurrentLocation= NO;
+    [self updateTickets];
 
+}
+-(void)updateTickets{
+    
+    [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeBlack];
+    
+    UserDTO*user=[[VSSharedManager sharedManager] currentUser];
+    
+    [[WebServiceManager sharedManager] getTickets:[NSString stringWithFormat:@"%d",user.masterKey] fromDate:nil toDate:nil userName:[[NSUserDefaults standardUserDefaults] objectForKey:@"userID"] withCompletionHandler:^(id data,BOOL error){
+        
+        [SVProgressHUD dismiss];
+        
+        if (!error) {
+            
+            [self.tickets removeAllObjects];
+            self.tickets=[NSMutableArray arrayWithArray:(NSMutableArray*)data];
 
+            [self updateGUI];
+            [self initalizeMap];
+            [self plotLocationPositions];
+            [self.routeTable reloadData];
+        }
+        else
+            [self initWithPromptTitle:@"Error" message:(NSString *)data];
+        
+    }];
+
+}
 - (void)dealloc {
     [_mapView release];
     [_routeTable release];
@@ -139,7 +169,7 @@
     
     self.mapView.showsUserLocation=YES;
     self.mapView.delegate=self;
-    self.tickets=[NSArray arrayWithArray:[[VSSharedManager sharedManager] ticketInfo]];
+   // self.tickets=[NSArray arrayWithArray:[[VSSharedManager sharedManager] ticketInfo]];
 //    [self currentLocationButtonPressed:nil];
     
 }
@@ -153,7 +183,7 @@
         [self.mapView removeAnnotation:annotation];
     }
     
-    self.addresses=[NSArray arrayWithArray:[[VSSharedManager sharedManager] ticketInfo]];
+    self.addresses=[NSArray arrayWithArray:self.tickets];
     
     for (int i=0; i<[self.addresses count] ;i++) {
         
@@ -173,7 +203,12 @@
           pinColor = @"checkered";
       }else   if ( [ticketstatus isEqualToString:@"Assigned"]) {
             pinColor = @"green";
-          }else {
+          }
+      else if([[ticketstatus lowercaseString] isEqualToString:@"suspended"]){
+          
+          pinColor = @"yellow";
+      }
+      else {
             pinColor = @"red";
           }
       
@@ -184,15 +219,18 @@
         }
         
         TicketAddressDTO *address1 =address.address1;
-        TicketAddressDTO *address2 =address.address2;
-       
-       NSString * addressLocation =[NSString stringWithFormat:@"%@ \n%@, %@ %@ \n",address1.street,address1.city,address1.state,address1.postalCode];
+     //   TicketAddressDTO *address2 =address.address2;
+       /*
         
-        if (address2) {
-            
-            addressLocation=[addressLocation stringByAppendingString:[NSString stringWithFormat:@"%@ \n%@, %@ %@ \n",address2.street,address2.city,address2.state,address2.postalCode]];
-        }
+        Company name
+        Ist line address
+        Ticket #
+        */
         
+        //clientName
+       NSString * addressLocation =[NSString stringWithFormat:@"%@\n%@\n%@, %@ %@ \n%@",address.clientName,address1.street,address1.city,address1.state,address1.postalCode,address.unEncryptedAssetID];
+        
+     
         CLLocationCoordinate2D coordinate;
         coordinate.latitude = latitude;
         coordinate.longitude = longitude;
@@ -361,6 +399,9 @@
       else if ( [ann.pinColor isEqualToString:@"blue"] ) {
         annotationView.image=[UIImage imageNamed:@"fblue_flag_32.png"];//here we use a nice image instead of the default pins
       }
+      else if ([ann.pinColor isEqualToString:@"yellow"]){
+          annotationView.image=[UIImage imageNamed:@"fyellow_flag32.png"];//here we use a nice image instead of the default pins
+      }
       else {
         annotationView.image=[UIImage imageNamed:@"fred_flag_32.png"];//here we use a nice image instead of the default pins
         
@@ -486,13 +527,14 @@
         [cell.mapButton addTarget: self
                             action: @selector(accessoryButtonTapped:withEvent:)
                   forControlEvents: UIControlEventTouchUpInside];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-//        [cell.scanButton addTarget: self
-//                            action: @selector(accessoryButtonTapped:withEvent:)
-//                  forControlEvents: UIControlEventTouchUpInside];
+        [cell.scanButton addTarget: self
+                            action: @selector(scanAccessoryButtonTapped:withEvent:)
+                  forControlEvents: UIControlEventTouchUpInside];
         
         cell.callButton.hidden = YES;
-        cell.scanButton.hidden = YES;
+      //  cell.scanButton.hidden = YES;
         
         return cell;
     }else{
@@ -517,8 +559,166 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
-  
+    
+}
 
+- (void)scanAccessoryButtonTapped: (UIControl *) button withEvent: (UIEvent *) event{
+    
+    
+    NSIndexPath * indexPath = [self.routeTable indexPathForRowAtPoint: [[[event touchesForView: button] anyObject] locationInView: self.routeTable]];
+    if ( indexPath == nil )
+        return;
+    
+    [[VSSharedManager sharedManager] setCurrentSelectedIndex:indexPath.row];
+    [[VSSharedManager sharedManager] setCurrentSelectedSection:indexPath.section];
+    if ([self.tickets count]>0) {
+        
+        [[VSSharedManager sharedManager]setSelectedTicket:[self.tickets objectAtIndex:indexPath.section]];
+        TicketDTO *ticket=[self.tickets objectAtIndex:indexPath.section];
+        NSMutableArray *array=[NSMutableArray arrayWithArray:ticket.tickets];
+        TicketInfoDTO *ticketInfo =[array objectAtIndex:indexPath.row];
+        
+        
+        
+        if ([[ticketInfo.ticketStatus lowercaseString] isEqualToString:@"suspended"]){
+            
+            
+            //+(NSString *)getStringFormCurrentDate
+            
+            [[VSSharedManager sharedManager] setSelectedTicketInfo:[array objectAtIndex:indexPath.row]];
+            [self.navigationController pushViewController:[ScanVC initWithPreview] animated:YES];
+            
+        }
+        else if ([[ticketInfo.ticketStatus lowercaseString] isEqualToString:@"complete"])
+        {
+            
+            //            [self initWithPromptTitle:@"Ticket Scanned already" message:@"You have finished this job already"];
+            [[VSSharedManager sharedManager] setSelectedTicketInfo:[array objectAtIndex:indexPath.row]];
+            [self.navigationController pushViewController:[ScanVC initWithhiddenScan] animated:YES];
+            
+            //            return;
+            
+        }
+        else
+        {
+            
+            //For Testing Uncomment this
+            /*
+             [[VSSharedManager sharedManager] setSelectedTicketInfo:[array objectAtIndex:indexPath.row]];
+             [self.navigationController pushViewController:[HomeVC initWithHome] animated:YES];
+             return;
+             */
+            
+            ////Check the tolerance factor
+            
+            if([ [ticketInfo.ticketStatus lowercaseString] isEqualToString:@"assigned"]){
+                
+                if ([ticketInfo.overDue isEqualToString:@"0"]) {
+                    
+                    if ([ticket.tolerance integerValue] > 0) {
+                        
+                        
+                        NSDate *serverDate =[WSUtils getDateFromString:ticketInfo.toleranceDate withFormat:@"dd-MM-yyyy HH:mm:ss"];
+                        
+                        /**
+                         *	To Date conversion
+                         */
+                        
+                        NSDate *currentDate = [NSDate date];
+                        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+                        [dateFormat setDateFormat:@"dd-MM-yyyy HH:mm:ss"];
+                        NSString *dateString = [dateFormat stringFromDate:currentDate];
+                        
+                        NSDate *today =[WSUtils getDateFromString:dateString withFormat:@"dd-MM-yyyy HH:mm:ss"];
+                        
+                        int differenceInSeconds = 0;
+                        differenceInSeconds = [WSUtils secondsBetweenThisDate:serverDate andDate:today];
+                        
+                        ///If current date difference from server date is greater then 0 that means ticket is overdue
+                        int currentDateDifference =0;
+                        currentDateDifference = [WSUtils secondsBetweenThisDate:currentDate andDate:serverDate];
+                        
+                        if (currentDateDifference > 0) {
+                            
+                            [[VSSharedManager sharedManager] setSelectedTicketInfo:[array objectAtIndex:indexPath.row]];
+                            [self.navigationController pushViewController:[ScanVC initWithPreview] animated:YES];
+                            //                            [self.navigationController pushViewController:[HomeVC initWithHome] animated:YES];
+                            
+                        }
+                        else if ((-differenceInSeconds >= -[ticket.tolerance integerValue]) || (differenceInSeconds <= [ticket.tolerance integerValue]))//Check the Tolerance factor here
+                        {
+                            [[VSSharedManager sharedManager] setSelectedTicketInfo:[array objectAtIndex:indexPath.row]];
+                            [self.navigationController pushViewController:[ScanVC initWithPreview]  animated:YES];
+                            //                            [self.navigationController pushViewController:[HomeVC initWithHome] animated:YES];
+                            
+                        }
+                        else
+                        {
+                            [self initWithPromptTitle:@"Scan Warning" message:@"Ticket Not Yet Due"];
+                            [[VSSharedManager sharedManager] setSelectedTicketInfo:[array objectAtIndex:indexPath.row]];
+                            [self.navigationController pushViewController:[ScanVC initWithhiddenScan]  animated:YES];
+                        }
+                    }
+                    else{
+                        
+                        NSDate *serverDate =[WSUtils getDateFromString:ticketInfo.toleranceDate withFormat:@"dd-MM-yyyy HH:mm:ss"];
+                        
+                        serverDate = [WSUtils dateByAddingSystemTimeZoneToDate:serverDate];
+                        NSDate *currentDate = [NSDate date];
+                        
+                        int differenceInSeconds = 0;
+                        differenceInSeconds = [WSUtils secondsBetweenThisDate:serverDate andDate:currentDate];
+                        
+                        int currentDateDifference =0;
+                        
+                        currentDateDifference = [WSUtils secondsBetweenThisDate:currentDate andDate:serverDate];
+                        
+                        if (differenceInSeconds==0) {
+                            
+                            [[VSSharedManager sharedManager] setSelectedTicketInfo:[array objectAtIndex:indexPath.row]];
+                            [self.navigationController pushViewController:[ScanVC initWithPreview] animated:YES];
+                            //                            [self.navigationController pushViewController:[HomeVC initWithHome] animated:YES];
+                            
+                        }
+                        else
+                        {
+                            if (currentDateDifference > 0) {
+                                
+                                [[VSSharedManager sharedManager] setSelectedTicketInfo:[array objectAtIndex:indexPath.row]];
+                                [self.navigationController pushViewController:[ScanVC initWithPreview]  animated:YES];
+                                //                                [self.navigationController pushViewController:[HomeVC initWithHome] animated:YES];
+                                
+                            }
+                            else
+                            {
+                                [self initWithPromptTitle:@"Scan Warning" message:@"Please scan ticket on time"];
+                                [[VSSharedManager sharedManager] setSelectedTicketInfo:[array objectAtIndex:indexPath.row]];
+                                [self.navigationController pushViewController:[ScanVC initWithhiddenScan] animated:YES];
+                                
+                            }
+                        }
+                    }
+                    
+                }
+                else{
+                    
+                    [[VSSharedManager sharedManager] setSelectedTicketInfo:[array objectAtIndex:indexPath.row]];
+                    [self.navigationController pushViewController:[ScanVC initWithPreview] animated:YES];
+                    //                    [self.navigationController pushViewController:[HomeVC initWithHome] animated:YES];
+                    
+                }
+            }
+            else
+            {
+                
+                [[VSSharedManager sharedManager] setSelectedTicketInfo:[array objectAtIndex:indexPath.row]];
+                [self.navigationController pushViewController:[ScanVC initWithPreview] animated:YES];
+                //                [self.navigationController pushViewController:[HomeVC initWithHome] animated:YES];
+                
+            }
+        }
+    }
+    
 }
 
 - (void)accessoryButtonTapped: (UIControl *) button withEvent: (UIEvent *) event{

@@ -42,7 +42,8 @@
     [[IQKeyboardManager sharedManager] setEnableAutoToolbar:YES];
     [[SharedManager getInstance] setIsMessage:FALSE];
 
- 
+    
+    
     
     [[UIDevice currentDevice] setBatteryMonitoringEnabled:YES];
 //    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
@@ -76,7 +77,7 @@
     
     //    [[NSUserDefaults standardUserDefaults]setObject:[NSString stringWithFormat:@"%@",deviceTK] forKey:@"apns_device_token"];
 
-    DLog(@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"apns_device_token"]);
+    NSLog(@"APNS %@",[[NSUserDefaults standardUserDefaults] objectForKey:@"apns_device_token"]);
     // Let the device know we want to receive push notifications
 
     //[[UIApplication sharedApplication] registerForRemoteNotificationTypes:

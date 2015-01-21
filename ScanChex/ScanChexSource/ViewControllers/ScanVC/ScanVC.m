@@ -42,6 +42,8 @@
 #import "PDFViewController.h"
 #import "HistoryDTO.h"
 #import "RoutesViewController.h"
+#import "UIImageView+WebCache.h"
+
 
 @interface ScanVC ()<showQuestionDelegate,assetDelegate,HistoryVCDelegate>
 {
@@ -132,7 +134,17 @@
     
     [self.historyArray removeAllObjects];
     UserDTO *user=[[VSSharedManager sharedManager] currentUser];
+    
+    UserDTO *userDTO = [[SharedManager getInstance] loadUserObjectWithKey:@"user"];
+    
+    if (!IsEmpty(userDTO.company_logo)) {
+        
+        [self.companyLogo sd_setImageWithURL:[NSURL URLWithString:userDTO.company_logo] placeholderImage:[UIImage imageNamed:@"logo.png"]];
+    }
+
+    
     [[WebServiceManager sharedManager] showHistory:[NSString stringWithFormat:@"%d",user.masterKey] ticketID:ticketAsset.assetID withCompletionHandler:^(id data, BOOL error){
+        
         
         //  [SVProgressHUD dismiss];
         if (!error) {
@@ -269,6 +281,7 @@
 }
 
 - (void)dealloc {
+    [_companyLogo release];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
    
@@ -323,10 +336,15 @@
     if (picture.size.height >= 640.0 && picture.size.width >= 480.0 && picture.size.width > picture.size.height) {
         
         picture=[picture imageWithImage:picture scaledToSize:CGSizeMake(320.0,240.0)];
+        
+        self.isLandScape = YES;
     }
     else if (picture.size.height >= 640.0 && picture.size.width >= 480.0 && picture.size.width < picture.size.height)///for portrait mode
     {
         picture=[picture imageWithImage:picture scaledToSize:CGSizeMake(240.0,320.0)];
+        
+        self.isLandScape = NO;
+
     }
     else if(picture.size.width < 480.0 && picture.size.height >= 640.0){
         
@@ -752,6 +770,7 @@
             if ([[[VSSharedManager sharedManager]selectedTicketInfo] allow_id_card_scan]) {
                 if ([[self.currentScannedCode lowercaseString] isEqualToString:[ticketAsset.assetCode lowercaseString]] || [[self.currentScannedCode lowercaseString] isEqualToString:[[[VSSharedManager sharedManager] currentUser] employee_card_id]] ) {
                     [SVProgressHUD show];
+                 
                     TicketInfoDTO *ticket=[[VSSharedManager sharedManager] selectedTicketInfo];
                     CLLocation *lasKnownLocation=[[VSLocationManager sharedManager] lastKnownLocation];
                     UserDTO *user=[[VSSharedManager sharedManager] currentUser];
@@ -1467,13 +1486,52 @@
         
         UIImage *image =[info objectForKey:@"UIImagePickerControllerOriginalImage"];
         image=[image fixOrientation];
-        image=[image imageWithImage:image scaledToSize:CGSizeMake(320,240)];
         
+        if (image.size.height >= 640.0 && image.size.width >= 480.0 && image.size.width > image.size.height) {
+
+             image=[image imageWithImage:image scaledToSize:CGSizeMake(640,480)];
+        }
+        else{
+        
+            image=[image imageWithImage:image scaledToSize:CGSizeMake(480,640)];
+
+        }
         [self setImageAspectRatio:image];
 //        NSData *imageData = UIImagePNGRepresentation(image);
-        NSData *imageData = UIImageJPEGRepresentation(image, 0.5);
         
         
+        TicketInfoDTO *ticket=[[VSSharedManager sharedManager] selectedTicketInfo];
+        CLLocation *lasKnownLocation=[[VSLocationManager sharedManager] lastKnownLocation];
+        UserDTO *user=[[VSSharedManager sharedManager] currentUser];
+        
+        NSString *latLong = [NSString stringWithFormat:@"%@/%@",[NSString stringWithFormat:@"%.7f",lasKnownLocation.coordinate.latitude],[NSString stringWithFormat:@"%.7f",lasKnownLocation.coordinate.longitude]];
+ 
+        
+        NSString *plottedString  = [NSString stringWithFormat:@"Ticket Id\n%@\nDate Time:\n%@\nLat/Lon\n%@\nEmployee:\n%@",ticket.ticketID,[self stringWithDate:[NSDate date]],latLong,user.name];
+        
+        
+        CGPoint  scanChexLogoPoint = CGPointZero;
+        CGPoint   newImagePoint = CGPointZero;
+        
+       // if (self.isLandScape) {
+            
+            
+            
+            
+            scanChexLogoPoint= CGPointMake(image.size.width - 125 , image.size.height - 40);
+            newImagePoint = CGPointMake(image.size.width - 125,image.size.height - 110);
+
+//        }
+//        else{
+//        
+//            scanChexLogoPoint= CGPointMake(210 , 220);
+//            newImagePoint = CGPointMake(210,150);
+//        }
+        
+        UIImage *image1 = [SharedManager drawImage:[UIImage imageNamed:@"logo3.png"] inImage:image atPoint:scanChexLogoPoint];
+        
+        UIImage *newImage  = [SharedManager drawFront:image1 text:plottedString atPoint:newImagePoint];
+        NSData *imageData = UIImageJPEGRepresentation(newImage, 0.5);
         
         NSString *path;
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -1499,7 +1557,6 @@
         
         [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeBlack];
 
-        UserDTO*user=[[VSSharedManager sharedManager] currentUser];
         
         [[WebServiceManager sharedManager] uploadImage:[NSString stringWithFormat:@"%d",user.masterKey]
                                              historyID:[[VSSharedManager sharedManager] historyID]
@@ -1527,6 +1584,13 @@
 }
 ////////////////////////////////////////////////////////////////
 
+
+- (NSString *)stringWithDate:(NSDate *)date
+{
+    return [NSDateFormatter localizedStringFromDate:date
+                                          dateStyle:NSDateFormatterMediumStyle
+                                          timeStyle:NSDateFormatterLongStyle];
+}
 #pragma mark- AlertView Delegate
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
@@ -1676,6 +1740,7 @@
         
         cell.callButton.hidden = YES;
         cell.scanButton.hidden = YES;
+       cell.selectionStyle = UITableViewCellSelectionStyleNone;
         //        cell.mapButton.hidden = YES;
         
         return cell;

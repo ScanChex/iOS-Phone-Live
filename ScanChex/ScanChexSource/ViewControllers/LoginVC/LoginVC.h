@@ -17,6 +17,7 @@
 @property (retain, nonatomic) IBOutlet UITextField *companyID;
 @property (retain, nonatomic) IBOutlet UITextField *userID;
 @property (retain, nonatomic) IBOutlet UITextField *password;
+@property (retain, nonatomic) IBOutlet UIImageView *companyLogo;
 
 - (IBAction)loginButtonPressed:(id)sender;
 - (IBAction)forgotPasswordButtonPressed:(id)sender;

@@ -44,6 +44,9 @@
 @property (retain, nonatomic) IBOutlet UIImageView *questionsimageSign;
 @property (retain, nonatomic) IBOutlet UIButton *suspendButton;
 @property (nonatomic, retain) UITextView * alertText;
+@property (retain, nonatomic) IBOutlet UIImageView *companyLogo;
+@property (nonatomic, assign) BOOL isLandScape;
+
 
 @property (retain)UIDocumentInteractionController *docController;
 

@@ -20,6 +20,8 @@
 @synthesize company_user = _company_user;
 @synthesize employee_card_id = _employee_card_id;
 @synthesize session_id = _session_id;
+@synthesize company_logo = _company_logo;
+
 +(id)userWithDictionary:(NSDictionary *)dictionary{
 
     return [[[self alloc] initWithDictionary:dictionary] autorelease];
@@ -35,6 +37,7 @@
     self.company_user = [dict valueForKey:@"company_user"];
     self.employee_card_id = [dict valueForKey:@"employee_card_id"];
     self.session_id = [dict valueForKey:@"session_id"];
+    self.company_logo = [dict valueForKey:@"company_logo"];
     
 }
 
@@ -52,6 +55,8 @@
   [encoder encodeObject:self.company_user forKey:@"company_user"];
   [encoder encodeObject:self.employee_card_id forKey:@"employee_card_id"];
   [encoder encodeObject:self.session_id forKey:@"session_id"];
+  [encoder encodeObject:self.company_logo forKey:@"company_logo"];
+
   
 }
 
@@ -70,6 +75,8 @@
     self.company_user = [decoder decodeObjectForKey:@"company_user"];
     self.employee_card_id = [decoder decodeObjectForKey:@"employee_card_id"];
     self.session_id = [decoder decodeObjectForKey:@"session_id"];
+      self.company_logo =[decoder decodeObjectForKey:@"company_logo"];
+
     
   
   }
@@ -82,6 +89,7 @@
     [self.logo release];
     [self.messageList release];
     [self.company_user release];
+    [self.company_logo release];
     
     [super dealloc];
 }

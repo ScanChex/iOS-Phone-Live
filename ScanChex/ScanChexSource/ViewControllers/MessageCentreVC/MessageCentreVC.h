@@ -31,6 +31,7 @@
 @property (nonatomic, retain) IBOutlet UILabel * weekLabel;
 @property (nonatomic, retain) IBOutlet UILabel * monthLabel;
 @property (nonatomic, retain) IBOutlet UILabel * twoMonthsLabel;
+@property (retain, nonatomic) IBOutlet UIImageView *companyLogo;
 
 +(id)initWithMessageCentre;
 - (IBAction)onBackClick:(id)sender;

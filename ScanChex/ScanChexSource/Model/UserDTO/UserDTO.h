@@ -20,6 +20,7 @@
 @property (nonatomic, retain) NSString * company_user;
 @property (nonatomic, retain) NSString * employee_card_id;
 @property (nonatomic, retain) NSString * session_id;
+@property (nonatomic, retain) NSString * company_logo;
 
 +(id)userWithDictionary:(NSDictionary *)dictionary;
 

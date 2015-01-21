@@ -56,7 +56,7 @@
     UserDTO *user=[[VSSharedManager sharedManager] currentUser];
     self.name.text=user.name;
     
-    if (![user.logo isKindOfClass:[NSNull class]])
+    if (!IsEmpty(user.logo))
         [self.logoImage setImageURL:[NSURL URLWithString:user.logo]];
     
     
